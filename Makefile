@@ -6,7 +6,7 @@
 #    By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/05/27 20:00:40 by guigonza         ###   ########.fr        #
+#    Updated: 2025/06/02 17:59:51 by guigonza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,9 @@ INCLUDES    = -I. -Iincludes -I$(SRC_DIR) -I$(LIBFT_DIR)
 # Archivos fuente listados explícitamente
 SRC = $(SRC_DIR)/shell.c \
       $(SRC_DIR)/main.c \
+      $(SRC_DIR)/parser.c \
       #$(SRC_DIR)/enviroment.c \
       $(SRC_DIR)/executor.c \
-      $(SRC_DIR)/parser.c \
       $(SRC_DIR)/redirections.c \
 	  $(SRC_DIR)/builtings.c \
       $(SRC_DIR)/signals.c
@@ -59,7 +59,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT_DIR)/libft.a:
-	@make -s -C $(LIBFT_DIR)
+	@make -s -C $(LIBFT_DIR) bonus
 
 clean:
 	@make clean -C $(LIBFT_DIR)
