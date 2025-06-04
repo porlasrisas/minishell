@@ -1,29 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.c                                            :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/26 17:22:00 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/04 12:05:33 by guigonza         ###   ########.fr       */
+/*   Created: 2025/06/03 13:28:11 by guigonza          #+#    #+#             */
+/*   Updated: 2025/06/03 13:36:09 by guigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-char	*ft_prompt_line(t_shell *shell, const char *prompt)
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
-	char	*line;
+	void *new;
+	size_t size;
 
-	line = readline(prompt);
-	if (!line)
+	if (new_size == 0)
 	{
-		printf("exit\n");
-		shell->exit_status = 1;
+		free(ptr);
 		return (NULL);
 	}
-	if (*line)
-		add_history(line);
-	return (line);
+	if (!ptr)
+		return (malloc(new_size));
+	new = malloc(new_size);
+	if (!new)
+		return (NULL);
+	if (old_size < new_size)
+		size = old_size;
+	else
+		size = new_size;
+	ft_memcpy(new, ptr, size);
+	free(ptr);
+	return (new);
 }

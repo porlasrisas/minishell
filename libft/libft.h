@@ -6,7 +6,7 @@
 /*   By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:17:13 by guigonza          #+#    #+#             */
-/*   Updated: 2025/05/28 00:13:06 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:38:46 by guigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,12 @@ typedef struct s_list
 typedef struct s_format
 {
 	void			**ptr;
+	void			*ptr1;
 	int				depth;
 }					t_format;
 void				ft_cleaner(int count, ...);
-void	ft_error(const char	*custom_msg, int count, ...);
-
+void				ft_error(const char *custom_msg, int count, int type, ...);
+void				*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 t_list				*ft_lstnew(void *content);
 void				ft_lstadd_front(t_list **lst, t_list *new);

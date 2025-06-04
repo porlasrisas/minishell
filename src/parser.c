@@ -6,38 +6,56 @@
 /*   By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:59:18 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/02 20:14:28 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/06/04 11:54:02 by guigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_is_metachar(char c)
+int	ft_is_metachar(char c)
 {
 	return (c == '|' || c == '<' || c == '>');
 }
 
-static char	*ft_get_quoted(char *line, int *i, char quote)
+static char *ft_get_quoted(char *line, int *i, char quote)
 {
-	int	start;
+    int start;
+    int len;
 
-	start = *i;
-	while (line[*i] && line[*i] != quote)
-		(*i)++;
-	if (line[*i] == quote)
-		(*i)++;
-	return (ft_substr(line, start, (*i - start - 1) + 1));
+    start = *i;
+    (*i)++; // Avanzar para ignorar la comilla inicial
+
+    while (line[*i] && line[*i] != quote)
+        (*i)++; // Avanzar hasta encontrar la comilla de cierre
+
+    if (line[*i] == quote)
+        (*i)++; // Avanzar para ignorar la comilla de cierre
+
+    len = *i - start;
+    return (ft_substr(line, start, len));
 }
+
 
 static char	*ft_get_word(char *line, int *i)
 {
-	int	start;
+    int		start;
+    char	quote;
+    int		tmp;
 
-	start = *i;
-	while (line[*i] && !ft_isspace(line[*i]) && !ft_is_metachar(line[*i])
-		&& (line[*i] != '\'' && line[*i] != '"'))
-		(*i)++;
-	return (ft_substr(line, start, *i - start));
+    start = *i;
+    while (line[*i] && !ft_isspace(line[*i]) && !ft_is_metachar(line[*i]))
+    {
+        if (line[*i] == '\'' || line[*i] == '"')
+        {
+            quote = line[*i];
+            tmp = *i;
+            ft_get_quoted(line, &tmp, quote); // Procesar el contenido entre comillas
+            *i = tmp; // Actualizar el índice
+        }
+        else
+            (*i)++;
+    }
+    return (ft_substr(line, start, *i - start));
 }
 
 static char	*ft_get_metachar(char *line, int *i)
@@ -65,7 +83,7 @@ char	**ft_tokenizer(t_shell *shell, char *line)
 	{
 		while (line[shell->i] && ft_isspace(line[shell->i]))
 			shell->i++;
-		if (!line)
+		if (!line[shell->i])
 			break ;
 		if (line[shell->i] == '\'' || line[shell->i] == '"')
 			shell->tok = ft_get_quoted(line, &shell->i, line[shell->i]);
@@ -75,7 +93,7 @@ char	**ft_tokenizer(t_shell *shell, char *line)
 			shell->tok = ft_get_word(line, &shell->i);
 		if (shell->tok && shell->j < MAX_TOKENS)
 			shell->tokens[shell->j++] = shell->tok;
-		else
+		else if (shell->tok)
 			free(shell->tok);
 	}
 	shell->tokens[shell->j] = NULL;

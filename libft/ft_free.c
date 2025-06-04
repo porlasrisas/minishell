@@ -6,61 +6,89 @@
 /*   By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 23:05:54 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/02 16:09:58 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:39:23 by guigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdarg.h>
-#include <stdlib.h>
 #include <errno.h>
+#include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-
-static void	ft_deep_free(void **ptr)
+static void	ft_free_by_depth(t_format *format)
 {
-	int	i;
+	void	**current_ptr;
+	int		i;
+
+	if (!format || !format->ptr)
+		return ;
+	while (format->depth > 0)
+	{
+		current_ptr = (void **)format->ptr;
+		i = 0;
+		while (current_ptr && current_ptr[i])
+		{
+			free(current_ptr[i]);
+			current_ptr[i] = NULL;
+			i++;
+		}
+		free(current_ptr);
+		format->ptr = NULL;
+		format->depth--;
+	}
+}
+
+static void ft_deep_free(void **ptr)
+{
+	int i;
 
 	i = 0;
 	if (!ptr)
 		return ;
-	while (ptr[i])
+	while(ptr[i])
 	{
 		free(ptr[i]);
 		ptr[i] = NULL;
 		i++;
 	}
 	free(ptr);
+	ptr = NULL;
 }
 
 static void	ft_shallow_free(void *ptr)
 {
 	if (ptr)
+	{
 		free(ptr);
+		ptr = NULL;
+	}
 }
 
-void	ft_error(const char *custom_msg, int count, ...)
+void	ft_error(const char *custom_msg, int count, int type, ...)
 {
-	va_list	ap;
-	int		i;
-	void	*ptr;
-	int		type;
+	va_list		ap;
+	int			i;
+	t_format	*format;
 
+	format = NULL;
 	if (custom_msg)
 		ft_putstr_fd((char *)custom_msg, 2);
 	if (errno)
 		perror("Reason: ");
-	va_start(ap, count);
+	va_start(ap, type);
 	i = 0;
-	while (i < count)
+	while (i++ < count)
 	{
-		type = va_arg(ap, int);
-		ptr = va_arg(ap, void *);
+		format = va_arg(ap, t_format *);
+		if (!format)
+            continue;
 		if (type == 0)
-			ft_shallow_free(ptr);
-		else if (type == 1)
-			ft_deep_free((void **)ptr);
-		i++;
+			ft_shallow_free(format->ptr1);
+		if (type == 1)
+			ft_deep_free(format->ptr);
+		else if (type == 2)
+			ft_free_by_depth(format);
 	}
 	va_end(ap);
 }

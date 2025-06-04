@@ -6,7 +6,7 @@
 /*   By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/02 20:08:40 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:32:15 by guigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <term.h>      // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # include <termios.h>   // tcsetattr, tcgetattr
 # include <unistd.h>    // write, access, read, close, fork, getcwd, chdir,
-	//unlink, execve, dup, dup2, pipe, isatty, ttyname, ttyslot
+						// unlink, execve, dup, dup2, pipe, isatty, ttyname,
 
 // Incluye las cabeceras de readline para manejar la entrada y el historial
 # include <readline/history.h>  // add_history, rl_clear_history
@@ -40,7 +40,9 @@ typedef enum e_redir_type
 	REDIR_IN,     // <
 	REDIR_OUT,    // >
 	REDIR_APPEND, // >>
-	REDIR_HEREDOC // <<
+	PIPE,
+	REDIR_HEREDOC, // <<
+	REDIR_UNKNOWN
 }					t_redir_type;
 
 // Redirección individual
@@ -53,7 +55,8 @@ typedef struct s_redirection
 // Comando individual
 typedef struct s_command
 {
-	char **args;           // argumentos del comando
+	char			**args;
+	int args_count;        // argumentos del comando
 	t_redirection *redirs; // array de redirecciones
 	int				redir_count;
 	int pipe_after; // si este comando tiene un pipe |
@@ -87,6 +90,7 @@ typedef struct s_shell
 
 	t_history history; // historial de comandos
 	t_env env;         // entorno
+	t_format	*free;
 
 	int exit_status; // último código de salida
 }					t_shell;
@@ -95,8 +99,11 @@ typedef struct s_shell
 
 // prompt
 char				*ft_prompt_line(t_shell *shell, const char *prompt);
-
+int	ft_is_metachar(char c);
 // tokenizer
 char				**ft_tokenizer(t_shell *shell, char *line);
+t_redir_type	ft_get_redir_type(char	*token);
+t_command *ft_parse_tokens(char **tokens);
+
 
 #endif

@@ -6,7 +6,7 @@
 #    By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/25 13:18:53 by guigonza          #+#    #+#              #
-#    Updated: 2025/05/27 23:36:08 by guigonza         ###   ########.fr        #
+#    Updated: 2025/06/03 13:36:33 by guigonza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SRCS			=	ft_bzero.c \
 					ft_isspace.c \
 					ft_strmapi.c \
 					ft_split.c\
+					ft_realloc.c \
 					ft_free.c
 
 
