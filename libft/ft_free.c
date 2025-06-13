@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: carbon-m <carbon-m@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 23:05:54 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/03 19:39:23 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:05:06 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ static void	ft_shallow_free(void *ptr)
 		ptr = NULL;
 	}
 }
+
+/* Habría ue ver cómo poder poner mensajes personalizados con variables 
+Ej: permission denied y el input del archivo que se quiere abrir/cerrar*/
 
 void	ft_error(const char *custom_msg, int count, int type, ...)
 {

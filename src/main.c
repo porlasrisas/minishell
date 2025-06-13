@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: carbon-m <carbon-m@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:47:53 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/03 19:30:44 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:39:34 by carbon-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,13 @@ int	main(int ac, char **av, char **env)
 				i++;
 			}
 			printf("history:\n %s\n", line);
+			int k = 0;
+			while (shell.tokens[k])
+			{
+				printf("%s \n",shell.tokens[k]);
+				++k;
+			}
+			printf("%d \n ",shell.token_count );
 			ft_error(NULL, 1, 2, &shell.free);
 		}
 	}

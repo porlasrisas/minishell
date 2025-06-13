@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+         #
+#    By: carbon-m <carbon-m@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/06/03 16:12:17 by guigonza         ###   ########.fr        #
+#    Updated: 2025/06/12 16:41:35 by carbon-m         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC = $(SRC_DIR)/shell.c \
       $(SRC_DIR)/main.c \
       $(SRC_DIR)/parser.c \
 	  $(SRC_DIR)/parse_tokens.c\
+	  $(SRC_DIR)/process/cd.c\
       #$(SRC_DIR)/enviroment.c \
       $(SRC_DIR)/executor.c \
       $(SRC_DIR)/redirections.c \
