@@ -6,18 +6,18 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:31:54 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/06/16 10:36:54 by carbon           ###   ########.fr       */
+/*   Updated: 2025/06/16 10:59:13 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	child(t_shell shell, int num)
+void	child(t_shell shell, int num_arg)
 {
 	pid_t	pid;
 	int		fd[2];
 
-	if (shell.commands->args[num] == 0)
+	if (shell.commands->args[num_arg] == 0)
 	{
 		ft_putstr_fd("zsh: permission denied:\n", 2);
 		exit(127);
@@ -31,7 +31,7 @@ void	child(t_shell shell, int num)
 	{
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-		process(shell, num);
+		process(shell, num_arg);
 	}
 	else
 	{

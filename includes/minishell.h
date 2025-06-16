@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/16 10:52:49 by carbon           ###   ########.fr       */
+/*   Updated: 2025/06/16 10:57:43 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,9 @@ t_redir_type		ft_get_redir_type(char	*token);
 t_command 			*ft_parse_tokens(char **tokens);
 
 // gestión de apertura/creación de documentos
-void				open_doc(t_shell shell);
-void				create_trunc_doc(t_shell shell);
-void				create_append_doc(t_shell shell);
+void				open_doc(t_shell shell, int num_arg);
+void				create_trunc_doc(t_shell shell, int num_arg);
+void				create_append_doc(t_shell shell, int num_arg);
 
 // gestion de procesos hijos
 void	child(t_shell shell, int num);
