@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/03 18:32:15 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/06/16 08:54:58 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@
 // Tipo de redirección
 typedef enum e_redir_type
 {
-	REDIR_IN,     // <
-	REDIR_OUT,    // >
-	REDIR_APPEND, // >>
-	PIPE,
-	REDIR_HEREDOC, // <<
+	REDIR_IN,     	// <
+	REDIR_OUT,    	// >
+	REDIR_APPEND, 	// >>
+	PIPE,			// |
+	REDIR_HEREDOC, 	// <<
 	REDIR_UNKNOWN
 }					t_redir_type;
 
@@ -49,6 +49,7 @@ typedef enum e_redir_type
 typedef struct s_redirection
 {
 	char			*file;
+	int				fd;
 	t_redir_type	type;
 }					t_redirection;
 
@@ -56,10 +57,10 @@ typedef struct s_redirection
 typedef struct s_command
 {
 	char			**args;
-	int args_count;        // argumentos del comando
-	t_redirection *redirs; // array de redirecciones
+	int 			args_count;     // argumentos del comando
+	t_redirection	*redirs; 		// array de redirecciones
 	int				redir_count;
-	int pipe_after; // si este comando tiene un pipe |
+	int 			pipe_after;		// si este comando tiene un pipe |
 }					t_command;
 
 // Historial de comandos ejecutados
@@ -76,34 +77,47 @@ typedef struct s_env
 	int				count;
 }					t_env;
 
+// Estructura de gestion de fd's
+typedef struct s_filed
+{
+	int		doc_count;
+	int		*fd;
+}			t_filed;
+
 // Estructura general de shell
 typedef struct s_shell
 {
-	char *input_line; // línea cruda leída
-	char **tokens;    // tokens divididos
+	char 			*input_line; // línea cruda leída
+	char 			**tokens;    // tokens divididos
 	int				token_count;
 	int				i;
 	int				j;
 	char			*tok;
-	t_command *commands; // comandos procesados
+	t_command 		*commands; 	// comandos procesados
 	int				command_count;
-
-	t_history history; // historial de comandos
-	t_env env;         // entorno
-	t_format	*free;
-
-	int exit_status; // último código de salida
+	t_filed			filed;
+	t_history 		history; 	// historial de comandos
+	t_env 			env;         // entorno
+	t_format		*free;
+	int 			exit_status; // último código de salida
 }					t_shell;
 
 //// Funciones principales
 
 // prompt
 char				*ft_prompt_line(t_shell *shell, const char *prompt);
-int	ft_is_metachar(char c);
+int					ft_is_metachar(char c);
+
 // tokenizer
 char				**ft_tokenizer(t_shell *shell, char *line);
-t_redir_type	ft_get_redir_type(char	*token);
-t_command *ft_parse_tokens(char **tokens);
+t_redir_type		ft_get_redir_type(char	*token);
+t_command 			*ft_parse_tokens(char **tokens);
+
+//gestión de apertura/creación de documentos
+void				open_doc(t_shell shell);
+void				create_trunc_doc(t_shell shell);
+void				create_append_doc(t_shell shell);
+
 
 
 #endif
