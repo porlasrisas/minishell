@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: guigonza <guigonza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/03 18:32:15 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/06/17 18:15:58 by guigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define MAX_TOKENS 100
 # define TOKENS_LEN 256
+# define PATH_MAX 4096
 # include "libft/libft.h"
 # include <dirent.h>    // opendir, readdir, closedir
 # include <fcntl.h>     // open
@@ -28,8 +29,9 @@
 # include <term.h>      // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # include <termios.h>   // tcsetattr, tcgetattr
 # include <unistd.h>    // write, access, read, close, fork, getcwd, chdir,
+# include <limits.h>
 						// unlink, execve, dup, dup2, pipe, isatty, ttyname,
-
+#include <errno.h>
 // Incluye las cabeceras de readline para manejar la entrada y el historial
 # include <readline/history.h>  // add_history, rl_clear_history
 # include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line,
@@ -42,7 +44,7 @@ typedef enum e_redir_type
 	REDIR_APPEND, // >>
 	PIPE,
 	REDIR_HEREDOC, // <<
-	REDIR_UNKNOWN
+	REDIR_UNKNOWN,
 }					t_redir_type;
 
 // Redirección individual
@@ -73,6 +75,8 @@ typedef struct s_history
 typedef struct s_env
 {
 	char			**variables;
+	char 			*pwd;
+	char			*oldpwd;
 	int				count;
 }					t_env;
 
@@ -85,6 +89,7 @@ typedef struct s_shell
 	int				i;
 	int				j;
 	char			*tok;
+	t_redirection	*redir;
 	t_command *commands; // comandos procesados
 	int				command_count;
 
@@ -104,6 +109,13 @@ int	ft_is_metachar(char c);
 char				**ft_tokenizer(t_shell *shell, char *line);
 t_redir_type	ft_get_redir_type(char	*token);
 t_command *ft_parse_tokens(char **tokens);
+char	*ft_get_env(t_env *env, const char *key);
+void	ft_update_env(t_env *env);
+void	ft_cd(t_shell *shell, char **args);
+int	ft_handle_cd(t_shell *shell);
+
+
+
 
 
 #endif

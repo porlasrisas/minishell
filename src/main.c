@@ -3,38 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carbon-m <carbon-m@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: guigonza <guigonza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:47:53 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/12 17:39:34 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/06/17 18:16:40 by guigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 int	main(int ac, char **av, char **env)
 {
-	t_shell	shell;
-	t_command	*cmd;
-	char	*line;
-	int		i;
+    t_shell	shell;
+    t_command	*cmd;
+    char	*line;
+    int		i;
 
-	(void)av;
-	(void)env;
+    (void)av;
+    (void)env;
+    shell.exit_status = 0;
+    shell.tokens = NULL;
+    cmd = NULL;
+    line = NULL;
+    shell.free = malloc(sizeof(t_format));
+    if (!shell.free)
+        ft_error("No se pudo asignar memoria\n", 1, 2, &shell.free);
+    shell.free->ptr = NULL;
 
-	shell.exit_status = 0;
-	shell.tokens = NULL;
-	cmd = NULL;
-	line = NULL;
-	shell.free = malloc(sizeof(t_format));
-	if (!shell.free)
-		ft_error("No se pudo asignar memoria\n", 1, 2, &shell.free);
-	shell.free->ptr = NULL;
+    // Inicialización de pwd y oldpwd
+    shell.env.pwd = getcwd(NULL, 0);
+    if (!shell.env.pwd)
+        ft_error("Error al obtener el directorio actual\n", 1, 2, &shell.free);
+    shell.env.oldpwd = NULL;
 	if (ac >= 0)
 	{
 		while (1)
 		{
 			line = ft_prompt_line(&shell, "minishell ->$ ");
+            printf("Ruta actual: %s\n", shell.env.pwd);
+            printf("Ruta antigua: %s\n", shell.env.oldpwd);
 			if (!line)
 				break;
 			shell.tokens = ft_tokenizer(&shell, line);
@@ -44,6 +50,11 @@ int	main(int ac, char **av, char **env)
 				ft_error("Error: tokenización fallida\n", 1, 1, &shell.free);
 				continue ;
 			}
+            if (ft_handle_cd(&shell))
+            {
+                ft_error(NULL, 1, 2, &shell.free);
+                continue; // Evitar procesar el comando como otro tipo
+            }
 			cmd = ft_parse_tokens(shell.tokens);
 			i = 0;
 			while (shell.tokens[i] != NULL)
@@ -58,13 +69,6 @@ int	main(int ac, char **av, char **env)
 				i++;
 			}
 			printf("history:\n %s\n", line);
-			int k = 0;
-			while (shell.tokens[k])
-			{
-				printf("%s \n",shell.tokens[k]);
-				++k;
-			}
-			printf("%d \n ",shell.token_count );
 			ft_error(NULL, 1, 2, &shell.free);
 		}
 	}
