@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guigonza <guigonza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:13:51 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/16 19:38:55 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/06/30 16:21:58 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ t_command	*ft_parse_tokens(char **tokens)
 	{
 		if (ft_is_metachar(tokens[i][0]))
 		{
+			printf("Token a meta de token %ld: %s\n",i, tokens[i]);
 			type = ft_get_redir_type(tokens[i]);
 			if (!tokens[i + 1])
 			{
@@ -89,7 +90,11 @@ t_command	*ft_parse_tokens(char **tokens)
 			ft_add_redirection(cmd, tokens[i + 1], type);
 			i += 2;
 		}
-		ft_add_argument(cmd, tokens[i]);
+		else
+		{
+			printf("Token a comando de token %ld: %s\n",i, tokens[i]);
+			ft_add_argument(cmd, tokens[i]);
+		}
 		i++;
 	}
 	return (cmd);

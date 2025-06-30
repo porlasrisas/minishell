@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: guigonza <guigonza@student.42.fr>          +#+  +:+       +#+         #
+#    By: carbon <carbon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/06/16 19:40:49 by guigonza         ###   ########.fr        #
+#    Updated: 2025/06/30 13:32:53 by carbon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC = $(SRC_DIR)/shell.c \
       $(SRC_DIR)/parser.c \
 	  $(SRC_DIR)/parse_tokens.c\
 	  $(SRC_DIR)/cd.c \
+	  $(SRC_DIR)/tests.c \
       #$(SRC_DIR)/enviroment.c \
       $(SRC_DIR)/executor.c \
       $(SRC_DIR)/redirections.c \
@@ -43,7 +44,7 @@ RED = \033[0;31m
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT_DIR)/libft.a
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ) -o $(NAME) $(INCLUDES) -L$(LIBFT_DIR) -lft
+	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) -o $(NAME) $(INCLUDES) -L$(LIBFT_DIR) -lft
 	@echo "$(GREEN)Compilación completada: $(NAME)$(RESET)"
 	@echo "$(GREEN)---------------------------------------------------------------------------------------------------"
 	@echo "$(YELLOW) ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░░▒▓████████▓▒░░▒▓██████▓▒░"

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guigonza <guigonza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/17 18:15:58 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/06/30 13:34:09 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include <unistd.h>    // write, access, read, close, fork, getcwd, chdir,
 # include <limits.h>
 						// unlink, execve, dup, dup2, pipe, isatty, ttyname,
-#include <errno.h>
+# include <errno.h>
 // Incluye las cabeceras de readline para manejar la entrada y el historial
 # include <readline/history.h>  // add_history, rl_clear_history
 # include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line,
@@ -113,6 +113,7 @@ char	*ft_get_env(t_env *env, const char *key);
 void	ft_update_env(t_env *env);
 void	ft_cd(t_shell *shell, char **args);
 int	ft_handle_cd(t_shell *shell);
+void	tests(t_shell shell, t_command cmd);
 
 
 
