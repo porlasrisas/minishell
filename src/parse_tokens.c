@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:13:51 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/30 16:21:58 by carbon           ###   ########.fr       */
+/*   Updated: 2025/06/30 17:39:05 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ t_command	*ft_parse_tokens(char **tokens)
 		return (NULL);
 	while(tokens[i])
 	{
+		printf("Token para procesar %ld: %s\n",i, tokens[i]);
 		if (ft_is_metachar(tokens[i][0]))
 		{
 			printf("Token a meta de token %ld: %s\n",i, tokens[i]);
@@ -88,7 +89,7 @@ t_command	*ft_parse_tokens(char **tokens)
 				break ;
 			}
 			ft_add_redirection(cmd, tokens[i + 1], type);
-			i += 2;
+			++i;
 		}
 		else
 		{
