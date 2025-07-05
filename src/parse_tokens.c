@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:13:51 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/30 17:39:05 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/05 14:56:08 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ static	void 	ft_add_redirection(t_command *cmd, char *file, t_redir_type	type)
 		ft_error("Error al añadir redirección: \n", 1, 1, new_array);
 	cmd->redirs = new_array;
 	cmd->redirs[cmd->redir_count].type = type;
-	cmd->redirs[cmd->redir_count].file = file;
+	if (cmd->redirs[cmd->redir_count].type != 3)
+		cmd->redirs[cmd->redir_count].file = file;
+	else
+		cmd->redirs[cmd->redir_count].file = "|";
 	cmd->redir_count++;
 }
 t_redir_type	ft_get_redir_type(char *token)
@@ -81,7 +84,6 @@ t_command	*ft_parse_tokens(char **tokens)
 		printf("Token para procesar %ld: %s\n",i, tokens[i]);
 		if (ft_is_metachar(tokens[i][0]))
 		{
-			printf("Token a meta de token %ld: %s\n",i, tokens[i]);
 			type = ft_get_redir_type(tokens[i]);
 			if (!tokens[i + 1])
 			{
@@ -89,14 +91,13 @@ t_command	*ft_parse_tokens(char **tokens)
 				break ;
 			}
 			ft_add_redirection(cmd, tokens[i + 1], type);
-			++i;
+			if (ft_strncmp(tokens[i], "|",ft_strlen(tokens[i])) == 0)
+				++i;
+			else
+				i = i + 2;
 		}
 		else
-		{
-			printf("Token a comando de token %ld: %s\n",i, tokens[i]);
-			ft_add_argument(cmd, tokens[i]);
-		}
-		i++;
+			ft_add_argument(cmd, tokens[i++]);
 	}
 	return (cmd);
 }
