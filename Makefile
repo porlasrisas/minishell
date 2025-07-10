@@ -6,7 +6,7 @@
 #    By: carbon <carbon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/06/30 13:32:53 by carbon           ###   ########.fr        #
+#    Updated: 2025/07/10 20:49:09 by carbon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC = $(SRC_DIR)/shell.c \
 	  $(SRC_DIR)/parse_tokens.c\
 	  $(SRC_DIR)/cd.c \
 	  $(SRC_DIR)/tests.c \
+	  $(SRC_DIR)/parse_args.c \
       #$(SRC_DIR)/enviroment.c \
       $(SRC_DIR)/executor.c \
       $(SRC_DIR)/redirections.c \

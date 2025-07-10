@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:13:51 by guigonza          #+#    #+#             */
-/*   Updated: 2025/07/05 14:56:08 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/10 20:54:09 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static t_command	*ft_new_command(void)
 	if (!cmd)
 		return (NULL);
 	cmd->args = NULL;
+	cmd->args_flagged = NULL;
 	cmd->args_count = 0;
 	cmd->redirs = NULL;
 	cmd->redir_count = 0;
@@ -99,5 +100,6 @@ t_command	*ft_parse_tokens(char **tokens)
 		else
 			ft_add_argument(cmd, tokens[i++]);
 	}
+	i = 0;
 	return (cmd);
 }

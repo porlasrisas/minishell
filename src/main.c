@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:47:53 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/30 17:29:48 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/10 20:53:47 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(int ac, char **av, char **env)
     t_shell	shell;
     t_command	*cmd;
     char	*line;
-    int		i;
+/*     int		i; */
 
     (void)av;
     (void)env;
@@ -56,7 +56,8 @@ int	main(int ac, char **av, char **env)
                 continue; // Evitar procesar el comando como otro tipo
             }
 			cmd = ft_parse_tokens(shell.tokens);
-			i = 0;
+			ft_args_with_flags(shell.tokens, cmd);
+/* 			i = 0;
 			while (shell.tokens[i] != NULL)
 			{
 				printf("Token: %s\n", shell.tokens[i]);
@@ -67,7 +68,7 @@ int	main(int ac, char **av, char **env)
 			{
 				printf("Argumentos: %s\n", cmd->args[i]);
 				i++;
-			}
+			} */
 			printf("history:\n %s\n", line);
 			tests(shell, *cmd);
 			ft_error(NULL, 1, 2, &shell.free);
