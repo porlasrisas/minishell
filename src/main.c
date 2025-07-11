@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:47:53 by guigonza          #+#    #+#             */
-/*   Updated: 2025/07/10 20:53:47 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/11 18:54:08 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	main(int ac, char **av, char **env)
                 continue; // Evitar procesar el comando como otro tipo
             }
 			cmd = ft_parse_tokens(shell.tokens);
-			ft_args_with_flags(shell.tokens, cmd);
+ 			ft_args_with_flags(cmd);
 /* 			i = 0;
 			while (shell.tokens[i] != NULL)
 			{

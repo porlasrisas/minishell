@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 13:23:40 by carbon            #+#    #+#             */
-/*   Updated: 2025/06/30 16:11:36 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/11 21:49:34 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,11 @@ void	tests(t_shell shell, t_command cmd)
 			++j;
 		}
 		
+	}
+	i = 0;
+	while (cmd.args_flagged[i])
+	{
+		printf("Args con flag: %s\n", cmd.args_flagged[i]);
+		++i;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:13:51 by guigonza          #+#    #+#             */
-/*   Updated: 2025/07/10 20:54:09 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/11 18:04:35 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static	void	ft_add_argument(t_command	*cmd, char *arg)
 {
 	size_t	new_size;
 	char	**new_array;
+
 	new_size = (cmd->args_count + 2) * (sizeof(char *));
 	new_array = ft_realloc(cmd->args,cmd->args_count * sizeof(char *), new_size);
 	if (!new_array)

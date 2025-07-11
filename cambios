@@ -1,3 +1,4 @@
 he cambiado en el parse_tokens la iteración cuando encuentra metadato: había +2 y se saltaba un comando.
 También he crado un archivo test.c donde podemos pasar todos los tests para ver como se están guardando 
 las cosas y meter más funciones para ver donde se rompe o donde va mal (y así evitamos tenerlo todo en el main).
+

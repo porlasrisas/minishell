@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:50:31 by carbon            #+#    #+#             */
-/*   Updated: 2025/07/10 20:53:48 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/11 21:48:59 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,40 +19,39 @@ int ft_is_flag(char *token)
 	return (0);
 }
 
-void ft_args_with_flags(char **tokens, t_command *cmd)
+
+void ft_args_with_flags(t_command *cmd)
 {
 	int		i = 0;
 	int		count = 0;
+	char 	*tmp;
 	char	**flagged = NULL;
-
-	while (tokens[i])
+	char 	*entry;
+	
+	while (cmd->args[i])
 	{
-		char *entry = NULL;
-
-		if (ft_is_flag(tokens[i]))
+		entry = NULL;
+		if (ft_is_flag(cmd->args[i]))
 		{
-			if (tokens[i + 1] && !ft_is_flag(tokens[i + 1]))
+			tmp = ft_strjoin(cmd->args[i - 1], " ");
+			entry = ft_strjoin(tmp, cmd->args[i]);
+			free(tmp);
+			i++;
+			while (cmd->args[i] && ft_is_flag(cmd->args[i]))
 			{
-				char *tmp = ft_strjoin(tokens[i], " ");
-				entry = ft_strjoin(tmp, tokens[i + 1]);
-				free(tmp);
-				i += 2;
+				tmp = ft_strjoin(entry, " ");
+				free (entry);
+				entry = ft_strjoin(tmp, cmd->args[i]);
+				++i;
 			}
-			else
-				entry = ft_strdup(tokens[i++]);
 		}
 		else
-			entry = ft_strdup(tokens[i++]);
+			++i;
 		flagged = ft_realloc(flagged, sizeof(char *) * count, sizeof(char *) * (count + 1));
-		flagged[count++] = entry;
+		if (entry)
+			flagged[count++] = entry;
 	}
 	flagged = ft_realloc(flagged, sizeof(char *) * count, sizeof(char *) * (count + 1));
 	flagged[count] = NULL;
 	cmd->args_flagged = flagged;
-	i = 0;
-	while (cmd->args_flagged[i])
-	{
-		printf("Args con flag: %s\n", cmd->args_flagged[i]);
-		++i;
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/07/10 20:48:19 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/11 18:54:22 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,7 @@ void	ft_cd(t_shell *shell, char **args);
 int	ft_handle_cd(t_shell *shell);
 void	tests(t_shell shell, t_command cmd);
 int ft_is_flag(char *token);
-void ft_args_with_flags(char **tokens, t_command *cmd);
-
+void ft_args_with_flags(t_command *cmd);
 
 
 
