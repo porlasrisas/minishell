@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+         #
+#    By: carbon <carbon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/25 13:18:53 by guigonza          #+#    #+#              #
-#    Updated: 2025/06/03 13:36:33 by guigonza         ###   ########.fr        #
+#    Updated: 2025/07/12 19:26:39 by carbon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,8 @@ SRCS			=	ft_bzero.c \
 					ft_strmapi.c \
 					ft_split.c\
 					ft_realloc.c \
-					ft_free.c
+					ft_free.c\
+					ft_strjoin_free.c\
 
 
 OBJS			= $(SRCS:.c=.o)

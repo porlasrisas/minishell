@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:50:31 by carbon            #+#    #+#             */
-/*   Updated: 2025/07/11 21:48:59 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/13 14:54:46 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,11 @@ void ft_args_with_flags(t_command *cmd)
 		if (ft_is_flag(cmd->args[i]))
 		{
 			tmp = ft_strjoin(cmd->args[i - 1], " ");
-			entry = ft_strjoin(tmp, cmd->args[i]);
-			free(tmp);
+			entry = ft_strjoin_free(tmp, cmd->args[i]);
 			i++;
 			while (cmd->args[i] && ft_is_flag(cmd->args[i]))
 			{
-				tmp = ft_strjoin(entry, " ");
-				free (entry);
+				tmp = ft_strjoin_free(entry, " ");
 				entry = ft_strjoin(tmp, cmd->args[i]);
 				++i;
 			}
