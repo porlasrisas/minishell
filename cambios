@@ -1,4 +1,8 @@
-he cambiado en el parse_tokens la iteración cuando encuentra metadato: había +2 y se saltaba un comando.
-También he crado un archivo test.c donde podemos pasar todos los tests para ver como se están guardando 
+	he cambiado en el parse_tokens la iteración cuando encuentra metadato: había +2 y se saltaba un comando.
+	También he crado un archivo test.c donde podemos pasar todos los tests para ver como se están guardando 
 las cosas y meter más funciones para ver donde se rompe o donde va mal (y así evitamos tenerlo todo en el main).
-
+	he añadido un proceso para tomar los argumentos con las flags respectivas dado que hace falta pasarlo todo junto para el execve 
+y el más útil guardarlo asi
+	he añadido la funcion ft_strjoin_free y la he metido donde hacia falta, es lo mismo que el join normal pero tiene un free de la string 
+que no se usa para limpieza de codigo y para ahorrarnos una linea de free en la mini cada vez que la usamos
+	

@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:59:18 by guigonza          #+#    #+#             */
-/*   Updated: 2025/07/10 18:28:17 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/15 19:44:57 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static char *ft_get_quoted(char *line, int *i, char quote)
     len = *i - start;
     return (ft_substr(line, start, len));
 }
-
 
 static char	*ft_get_word(char *line, int *i)
 {
