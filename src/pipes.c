@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 21:09:38 by carbon            #+#    #+#             */
-/*   Updated: 2025/07/15 21:26:04 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/18 20:24:41 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	ft_execute_pipeline_execve(t_shell *shell)
 				exit(EXIT_FAILURE);
 			}
 		}
-
 		pid = fork();
 		if (pid == -1)
 		{
@@ -63,7 +62,7 @@ void	ft_execute_pipeline_execve(t_shell *shell)
 					exit(127);
 				}
 			}
-
+			handle_redirections(cmd);
 			execve(path, cmd->args, shell->env.variables);
 			perror("execve failed");
 			exit(1);
@@ -115,3 +114,4 @@ char	*ft_resolve_command_path(t_shell *shell, char *cmd)
 	ft_error(NULL, 1, 1, paths);
 	return (NULL);
 }
+

@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 13:23:40 by carbon            #+#    #+#             */
-/*   Updated: 2025/07/12 15:20:36 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/21 10:14:22 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	tests(t_shell shell, t_command cmd)
 		printf("Token %d: %s\n", i + 1, shell.tokens[i]);
 		++i;
 	}
+	printf("Numero de comandos: %d\n", cmd.args_count);
 	while (cmd.args[j])
 	{
 		printf("Command %d: %s\n", j + 1, cmd.args[j]);

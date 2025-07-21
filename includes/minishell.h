@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/07/15 21:20:35 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/18 20:29:11 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int ft_is_flag(char *token);
 void ft_args_with_flags(t_command *cmd);
 void	ft_execute_pipeline_execve(t_shell *shell);
 char	*ft_resolve_command_path(t_shell *shell, char *cmd);
+void	handle_redirections(t_command *cmd);
 
 
 #endif

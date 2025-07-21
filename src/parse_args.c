@@ -6,7 +6,7 @@
 /*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:50:31 by carbon            #+#    #+#             */
-/*   Updated: 2025/07/15 13:23:20 by carbon           ###   ########.fr       */
+/*   Updated: 2025/07/21 12:30:45 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,13 @@ void ft_args_with_flags(t_command *cmd)
 		else
 			++i;
 		flagged = ft_realloc(flagged, sizeof(char *) * count, sizeof(char *) * (count + 1));
+		if (!cmd->args[i] && !entry)
+			entry = ft_strdup(cmd->args[i - 1]);
 		if (entry)
 			flagged[count++] = entry;
 	}
 	flagged = ft_realloc(flagged, sizeof(char *) * count, sizeof(char *) * (count + 1));
 	flagged[count] = NULL;
+	cmd->args_count = count;
 	cmd->args_flagged = flagged;
 }
