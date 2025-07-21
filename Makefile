@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: carbon <carbon@student.42.fr>              +#+  +:+       +#+         #
+#    By: Guille <Guille@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/07/18 20:29:38 by carbon           ###   ########.fr        #
+#    Updated: 2025/07/21 20:09:25 by Guille           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,8 @@ SRC = $(SRC_DIR)/shell.c \
       $(SRC_DIR)/main.c \
       $(SRC_DIR)/parser.c \
 	  $(SRC_DIR)/parse_tokens.c\
+	  $(SRC_DIR)/parse_utils.c \
+	  $(SRC_DIR)/parse_pipeline.c \
 	  $(SRC_DIR)/cd.c \
 	  $(SRC_DIR)/tests.c \
 	  $(SRC_DIR)/parse_args.c \

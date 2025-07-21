@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guigonza <guigonza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 15:37:24 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/06/17 18:18:11 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:12:54 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,11 @@ static void ft_cd_error(const char *path)
 
 int	ft_handle_cd(t_shell *shell)
 {
-    if (shell->tokens && ft_strncmp(shell->tokens[0], "cd", 3) == 0)
+    if (shell->tokens && shell->tokens[0] && shell->tokens[0][0] != '\0' &&
+        ft_strncmp(shell->tokens[0], "cd", 2) == 0 && 
+        (shell->tokens[0][2] == '\0' || shell->tokens[0][2] == ' '))
     {
+        printf("DEBUG: Comando CD detectado\n");
         ft_cd(shell, shell->tokens);
         return (1); // Indica que el comando fue manejado
     }
@@ -47,6 +50,8 @@ void	ft_cd(t_shell *shell, char **args)
 {
     char	*new_pwd;
 
+    printf("DEBUG ft_cd: Ejecutando CD con arg='%s'\n", args[1] ? args[1] : "HOME");
+    
     if (!args[1]) // Si no se pasa un argumento, ir al directorio HOME
     {
         char *home = getenv("HOME");
@@ -75,4 +80,5 @@ void	ft_cd(t_shell *shell, char **args)
         return;
     }
     shell->env.pwd = new_pwd;
+    printf("DEBUG ft_cd: CD exitoso. Nueva ruta: %s\n", shell->env.pwd);
 }
