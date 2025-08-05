@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 21:09:38 by carbon            #+#    #+#             */
-/*   Updated: 2025/07/21 21:52:09 by Guille           ###   ########.fr       */
+/*   Updated: 2025/07/22 00:26:46 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ void	ft_execute_pipeline_execve(t_shell *shell)
 			// Verificar si es un builtin
 			if (ft_is_builtin(cmd->args[0]))
 			{
-				printf("DEBUG: Builtin detectado en pipeline: '%s'\n", cmd->args[0]);
+				ft_putstr_fd("DEBUG: Builtin detectado en pipeline: '", 2);
+				ft_putstr_fd(cmd->args[0], 2);
+				ft_putstr_fd("'\n", 2);
 				ft_execute_builtin(shell, cmd);
 				exit(0); // Salir exitosamente del proceso hijo
 			}

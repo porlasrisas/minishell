@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:47:53 by guigonza          #+#    #+#             */
-/*   Updated: 2025/07/21 21:12:54 by Guille           ###   ########.fr       */
+/*   Updated: 2025/07/22 16:50:20 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,25 @@ int	main(int ac, char **av, char **env)
     shell.env.oldpwd = NULL;
     
     // Inicialización del entorno
-    shell.env.variables = env;
-    
     // Contar variables de entorno
     shell.env.count = 0;
     while (env[shell.env.count])
         shell.env.count++;
+    
+    // Crear copia dinámica del entorno
+    shell.env.variables = malloc(sizeof(char *) * (shell.env.count + 1));
+    if (!shell.env.variables)
+        ft_error("Error al asignar memoria para entorno\n", 1, 2, &shell.free);
+    
+    int i = 0;
+    while (i < shell.env.count)
+    {
+        shell.env.variables[i] = ft_strdup(env[i]);
+        if (!shell.env.variables[i])
+            ft_error("Error al copiar variable de entorno\n", 1, 2, &shell.free);
+        i++;
+    }
+    shell.env.variables[i] = NULL;
     
     printf("DEBUG: Variables de entorno inicializadas: %d\n", shell.env.count);
     

@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/07/21 22:05:24 by Guille           ###   ########.fr       */
+/*   Updated: 2025/07/22 16:50:20 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,13 @@ int	ft_is_metachar(char c);
 char				**ft_tokenizer(t_shell *shell, char *line);
 t_redir_type	ft_get_redir_type(char	*token);
 t_command	**ft_parse_tokens(t_shell *shell);
-t_command	*ft_parse_single_cmd(char **tokens);
+t_command	*ft_parse_single_cmd(t_shell *shell, char **tokens);
 
 // parse utils
 int				ft_count_pipes(t_shell *shell);
 char			**ft_copy_token_segment(t_shell *shell, int start, int end);
 int				ft_validate_pipe_syntax(t_shell *shell);
+char	*ft_remove_quotes(char *token);
 
 char	*ft_get_env(t_env *env, const char *key);
 void	ft_update_env(t_env *env);
@@ -134,6 +135,8 @@ int	ft_is_builtin(char *cmd);
 void	ft_builtin_pwd(void);
 void	ft_builtin_echo(char **args);
 void	ft_builtin_env(t_shell *shell);
+void	ft_builtin_export(t_shell *shell, char **args);
+void	ft_builtin_unset(t_shell *shell, char **args);
 void	ft_builtin_exit(t_shell *shell, char **args);
 void	ft_execute_builtin(t_shell *shell, t_command *cmd);
 void	ft_execute_simple_command(t_shell *shell);
@@ -141,5 +144,10 @@ void	ft_execute_pipeline_execve(t_shell *shell);
 char	*ft_resolve_command_path(t_shell *shell, char *cmd);
 void	handle_redirections(t_command *cmd);
 
+// Quote and variable expansion functions
+char	*ft_expand_variable(t_shell *shell, char *var_name);
+char	*ft_expand_double_quotes(t_shell *shell, char *str);
+char	*ft_process_token_quotes(t_shell *shell, char *token);
+int		ft_is_redirection_token(char *token);
 
 #endif

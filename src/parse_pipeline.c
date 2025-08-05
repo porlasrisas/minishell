@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 20:10:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/07/21 20:16:03 by Guille           ###   ########.fr       */
+/*   Updated: 2025/07/22 16:41:51 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	ft_process_pipe_segment(t_shell *shell, t_command **cmds)
 	t_format	format;
 
 	shell->segment = ft_copy_token_segment(shell, shell->start_idx, shell->i);
-	cmds[shell->cmd_idx] = ft_parse_single_cmd(shell->segment);
+	cmds[shell->cmd_idx] = ft_parse_single_cmd(shell, shell->segment);
 	format.ptr = (void **)shell->segment;
 	format.ptr1 = NULL;
 	format.depth = 0;
@@ -33,7 +33,7 @@ static void	ft_process_final_segment(t_shell *shell, t_command **cmds)
 	t_format	format;
 
 	shell->segment = ft_copy_token_segment(shell, shell->start_idx, shell->i);
-	cmds[shell->cmd_idx] = ft_parse_single_cmd(shell->segment);
+	cmds[shell->cmd_idx] = ft_parse_single_cmd(shell, shell->segment);
 	format.ptr = (void **)shell->segment;
 	format.ptr1 = NULL;
 	format.depth = 0;

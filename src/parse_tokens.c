@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:13:51 by guigonza          #+#    #+#             */
-/*   Updated: 2025/07/21 20:57:38 by Guille           ###   ########.fr       */
+/*   Updated: 2025/07/22 16:41:51 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,11 @@ static t_command	*ft_new_command(void)
 	cmd->pipe_after = 0;
 	return (cmd);
 }
-static	void	ft_add_argument(t_command	*cmd, char *arg)
+static	void	ft_add_argument(t_shell *shell, t_command	*cmd, char *arg)
 {
 	size_t	new_size;
 	char	**new_array;
+	char	*processed_arg;
 
 	printf("DEBUG ft_add_argument: recibido arg='%s'\n", arg ? arg : "NULL");
 	new_size = (cmd->args_count + 2) * (sizeof(char *));
@@ -41,7 +42,8 @@ static	void	ft_add_argument(t_command	*cmd, char *arg)
 		return;
 	}
 	cmd->args = new_array;
-	cmd->args[cmd->args_count] = ft_strdup(arg);  // COPIA el string
+	processed_arg = ft_process_token_quotes(shell, arg);
+	cmd->args[cmd->args_count] = processed_arg;
 	cmd->args[cmd->args_count + 1] = NULL;
 	cmd->args_count++;
 	printf("DEBUG ft_add_argument: guardado args[%d]='%s'\n", 
@@ -80,7 +82,7 @@ t_redir_type	ft_get_redir_type(char *token)
 	return (REDIR_UNKNOWN);
 }
 
- t_command	*ft_parse_single_cmd(char **tokens)
+ t_command	*ft_parse_single_cmd(t_shell *shell, char **tokens)
 {
     t_command	*cmd;
     int			i;
@@ -110,7 +112,7 @@ t_redir_type	ft_get_redir_type(char *token)
         }
         else
         {
-            ft_add_argument(cmd, tokens[i]);
+            ft_add_argument(shell, cmd, tokens[i]);
             i++;
         }
     }
