@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/05 18:24:11 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/05 18:45:12 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ void	handle_redirections(t_command *cmd);
 // Quote and variable expansion functions
 char	*ft_expand_variable(t_shell *shell, char *var_name);
 char	*ft_expand_double_quotes(t_shell *shell, char *str);
+char	*ft_expand_unquoted_token(t_shell *shell, char *token);
 char	*ft_process_token_quotes(t_shell *shell, char *token);
 int		ft_is_redirection_token(char *token);
 

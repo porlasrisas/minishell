@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 22:30:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/07/22 00:04:50 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/05 18:53:08 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ static void	ft_handle_child_process(t_shell *shell, t_command *cmd)
 			exit(127);
 		}
 	}
-	handle_redirections(cmd);
+	// Usar la función con heredoc para todas las redirecciones
+	if (has_heredoc(cmd))
+		handle_redirections_with_heredoc(cmd);
+	else
+		handle_redirections(cmd);
 	execve(path, cmd->args, shell->env.variables);
 	perror("execve failed");
 	exit(1);
@@ -55,6 +59,8 @@ static void	ft_execute_external_command(t_shell *shell, t_command *cmd)
 void	ft_execute_simple_command(t_shell *shell)
 {
 	t_command	*cmd;
+	pid_t		pid;
+	int			status;
 
 	if (!shell || !shell->commands || !shell->commands[0])
 		return ;
@@ -65,9 +71,36 @@ void	ft_execute_simple_command(t_shell *shell)
 		return ;
 	}
 	printf("DEBUG: Ejecutando comando simple '%s'\n", cmd->args[0]);
-	if (ft_is_builtin(cmd->args[0]))
+	
+	// Si hay redirecciones y es un builtin, necesitamos fork
+	if (ft_is_builtin(cmd->args[0]) && cmd->redir_count == 0)
 	{
 		ft_execute_builtin(shell, cmd);
+		return ;
+	}
+	else if (ft_is_builtin(cmd->args[0]) && cmd->redir_count > 0)
+	{
+		// Fork para builtin con redirecciones
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+			return ;
+		}
+		else if (pid == 0)
+		{
+			if (has_heredoc(cmd))
+				handle_redirections_with_heredoc(cmd);
+			else
+				handle_redirections(cmd);
+			ft_execute_builtin(shell, cmd);
+			exit(shell->exit_status);
+		}
+		else
+		{
+			waitpid(pid, &status, 0);
+			shell->exit_status = WEXITSTATUS(status);
+		}
 		return ;
 	}
 	ft_execute_external_command(shell, cmd);

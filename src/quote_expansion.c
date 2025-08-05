@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 01:00:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/07/22 16:39:20 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/05 18:45:12 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,39 @@ char	*ft_expand_double_quotes(t_shell *shell, char *str)
 	return (result);
 }
 
+char	*ft_expand_unquoted_token(t_shell *shell, char *token)
+{
+	char	*result;
+	char	*temp;
+	char	*var_name;
+	char	*var_value;
+	int		i;
+
+	result = ft_strdup("");
+	i = 0;
+	while (token[i])
+	{
+		if (token[i] == '$' && token[i + 1])
+		{
+			i++;
+			var_name = ft_extract_var_name(token, &i);
+			var_value = ft_expand_variable(shell, var_name);
+			temp = ft_strjoin_free(result, var_value);
+			result = temp;
+			free(var_name);
+			free(var_value);
+		}
+		else
+		{
+			temp = ft_substr(token, i, 1);
+			result = ft_strjoin_free(result, temp);
+			free(temp);
+			i++;
+		}
+	}
+	return (result);
+}
+
 char	*ft_process_token_quotes(t_shell *shell, char *token)
 {
 	char	*result;
@@ -117,19 +150,29 @@ char	*ft_process_token_quotes(t_shell *shell, char *token)
 	if (!token)
 		return (NULL);
 	len = ft_strlen(token);
-	if (len < 2)
-		return (ft_strdup(token));
-	if (token[0] == '"' && token[len - 1] == '"')
+	
+	// Token con comillas dobles - expandir variables
+	if (len >= 2 && token[0] == '"' && token[len - 1] == '"')
 	{
 		content = ft_substr(token, 1, len - 2);
 		result = ft_expand_double_quotes(shell, content);
 		free(content);
 		return (result);
 	}
-	if (token[0] == '\'' && token[len - 1] == '\'')
+	
+	// Token con comillas simples - literal (no expandir)
+	if (len >= 2 && token[0] == '\'' && token[len - 1] == '\'')
 	{
 		return (ft_substr(token, 1, len - 2));
 	}
+	
+	// Token sin comillas - expandir variables si las tiene
+	if (ft_strchr(token, '$'))
+	{
+		return (ft_expand_unquoted_token(shell, token));
+	}
+	
+	// Token normal sin variables
 	return (ft_strdup(token));
 }
 
