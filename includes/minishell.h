@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/07/22 16:50:20 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/05 18:24:11 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef enum e_redir_type
 typedef struct s_redirection
 {
 	char			*file;
+	char			*heredoc_content;
 	t_redir_type	type;
 }					t_redirection;
 
@@ -149,5 +150,11 @@ char	*ft_expand_variable(t_shell *shell, char *var_name);
 char	*ft_expand_double_quotes(t_shell *shell, char *str);
 char	*ft_process_token_quotes(t_shell *shell, char *token);
 int		ft_is_redirection_token(char *token);
+
+// Heredoc functions from Carbon
+void	handle_redirections_with_heredoc(t_command *cmd);
+void	handle_heredoc(const char *delimiter);
+char 	*read_heredoc_content(const char *delimiter);
+int		has_heredoc(t_command *cmd);
 
 #endif

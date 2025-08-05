@@ -6,7 +6,7 @@
 #    By: Guille <Guille@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/07/22 16:50:20 by Guille           ###   ########.fr        #
+#    Updated: 2025/08/05 18:24:11 by Guille           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC = $(SRC_DIR)/shell.c \
 	  $(SRC_DIR)/builtin_exit.c \
 	  $(SRC_DIR)/builtin_executor.c \
 	  $(SRC_DIR)/quote_expansion.c \
+	  $(SRC_DIR)/here_doc.c \
       $(SRC_DIR)/signals.c
 
 # Archivos objeto correspondientes

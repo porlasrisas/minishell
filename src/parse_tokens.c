@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:13:51 by guigonza          #+#    #+#             */
-/*   Updated: 2025/07/22 16:41:51 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/05 18:24:11 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,20 +63,28 @@ static	void 	ft_add_redirection(t_command *cmd, char *file, t_redir_type	type)
 	}
 	cmd->redirs = new_array;
 	cmd->redirs[cmd->redir_count].type = type;
-	if (cmd->redirs[cmd->redir_count].type != 3)
-		cmd->redirs[cmd->redir_count].file = file;
+	cmd->redirs[cmd->redir_count].heredoc_content = NULL;
+	if (type == REDIR_HEREDOC)
+	{
+		cmd->redirs[cmd->redir_count].file = ft_strdup(file);
+		cmd->redirs[cmd->redir_count].heredoc_content = read_heredoc_content(file);
+	}
+	else if (type != PIPE)
+		cmd->redirs[cmd->redir_count].file = ft_strdup(file);
 	else
-		cmd->redirs[cmd->redir_count].file = "|";
+		cmd->redirs[cmd->redir_count].file = ft_strdup("|");
 	cmd->redir_count++;
 }
 t_redir_type	ft_get_redir_type(char *token)
 {
+	if (ft_strncmp(token, "<<", 2) == 0 && ft_strlen(token) == 2)
+		return (REDIR_HEREDOC);
 	if (ft_strncmp(token, "<",ft_strlen(token)) == 0)
 		return (REDIR_IN);
-	else if (ft_strncmp(token, ">",ft_strlen(token)) == 0)
-		return (REDIR_OUT);
 	else if (ft_strncmp(token, ">>",ft_strlen(token)) == 0)
 		return (REDIR_APPEND);
+	else if (ft_strncmp(token, ">",ft_strlen(token)) == 0)
+		return (REDIR_OUT);
 	else if (ft_strncmp(token, "|",ft_strlen(token)) == 0)
 		return (PIPE);
 	return (REDIR_UNKNOWN);

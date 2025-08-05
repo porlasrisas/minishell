@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 21:10:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/07/22 16:50:20 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/05 18:24:11 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,16 @@ void	ft_execute_builtin(t_shell *shell, t_command *cmd)
 	ft_putstr_fd("DEBUG: Builtin '", 2);
 	ft_putstr_fd(cmd->args[0], 2);
 	ft_putstr_fd("' no implementado aún\n", 2);
+}
+
+int	has_heredoc(t_command *cmd)
+{
+	int i = 0;
+	while (i < cmd->redir_count)
+	{
+		if (cmd->redirs[i].type == REDIR_HEREDOC)
+			return 1;
+		i++;
+	}
+	return 0;
 }
