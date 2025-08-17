@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:59:18 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/04 11:54:02 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/07/15 19:44:57 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static char *ft_get_quoted(char *line, int *i, char quote)
     len = *i - start;
     return (ft_substr(line, start, len));
 }
-
 
 static char	*ft_get_word(char *line, int *i)
 {

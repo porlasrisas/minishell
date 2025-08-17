@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   open_close.c                                       :+:      :+:    :+:   */
+/*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/13 12:49:20 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/07/21 21:01:30 by Guille           ###   ########.fr       */
+/*   Created: 2025/07/21 22:30:00 by Guille            #+#    #+#             */
+/*   Updated: 2025/07/22 00:01:47 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	open_doc(t_shell shell)
+void	ft_builtin_exit(t_shell *shell, char **args)
 {
-	int	fd;
+	int	exit_code;
 
-	if (!shell.commands || !shell.commands[0] || !shell.commands[0]->redirs)
-		return;
-	fd = open(shell.commands[0]->redirs->file, O_RDONLY, 644);
-	if (fd == -1)
-		perror("zsh: permission denied");
+	exit_code = 0;
+	if (args[1])
+	{
+		exit_code = ft_atoi(args[1]);
+		if (exit_code < 0 || exit_code > 255)
+			exit_code = exit_code % 256;
+	}
+	printf("exit\n");
+	shell->exit_status = exit_code;
+	exit(exit_code);
 }

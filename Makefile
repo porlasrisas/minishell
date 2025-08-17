@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: carbon <carbon@student.42.fr>              +#+  +:+       +#+         #
+#    By: Guille <Guille@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/06/15 17:09:18 by carbon           ###   ########.fr        #
+#    Updated: 2025/08/05 18:24:11 by Guille           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,12 +25,23 @@ SRC = $(SRC_DIR)/shell.c \
       $(SRC_DIR)/main.c \
       $(SRC_DIR)/parser.c \
 	  $(SRC_DIR)/parse_tokens.c\
-	  $(SRC_DIR)/cd.c\
-	  $(SRC_DIR)/open_close.c\
-      #$(SRC_DIR)/enviroment.c \
+	  $(SRC_DIR)/parse_utils.c \
+	  $(SRC_DIR)/parse_pipeline.c \
+	  $(SRC_DIR)/cd.c \
+	  $(SRC_DIR)/tests.c \
+	  $(SRC_DIR)/parse_args.c \
+	  $(SRC_DIR)/pipes.c \
+      $(SRC_DIR)/enviroment.c \
       $(SRC_DIR)/executor.c \
       $(SRC_DIR)/redirections.c \
 	  $(SRC_DIR)/builtings.c \
+	  $(SRC_DIR)/builtin_basic.c \
+	  $(SRC_DIR)/builtin_env.c \
+	  $(SRC_DIR)/builtin_export.c \
+	  $(SRC_DIR)/builtin_exit.c \
+	  $(SRC_DIR)/builtin_executor.c \
+	  $(SRC_DIR)/quote_expansion.c \
+	  $(SRC_DIR)/here_doc.c \
       $(SRC_DIR)/signals.c
 
 # Archivos objeto correspondientes
@@ -44,7 +55,7 @@ RED = \033[0;31m
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT_DIR)/libft.a
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ) -o $(NAME) $(INCLUDES) -L$(LIBFT_DIR) -lft
+	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) -o $(NAME) $(INCLUDES) -L$(LIBFT_DIR) -lft
 	@echo "$(GREEN)Compilación completada: $(NAME)$(RESET)"
 	@echo "$(GREEN)---------------------------------------------------------------------------------------------------"
 	@echo "$(YELLOW) ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░░▒▓████████▓▒░░▒▓██████▓▒░"

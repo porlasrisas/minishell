@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carbon-m <carbon-m@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: guigonza <guigonza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 23:05:54 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/13 14:05:06 by carbon-m         ###   ########.fr       */
+/*   Updated: 2025/06/17 17:41:24 by guigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	ft_error(const char *custom_msg, int count, int type, ...)
 	if (custom_msg)
 		ft_putstr_fd((char *)custom_msg, 2);
 	if (errno)
-		perror("Reason: ");
+		perror("zsh: ");
 	va_start(ap, type);
 	i = 0;
 	while (i++ < count)

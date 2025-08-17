@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   open_close.c                                       :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/13 12:49:20 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/07/21 21:01:30 by Guille           ###   ########.fr       */
+/*   Created: 2025/07/21 22:30:00 by Guille            #+#    #+#             */
+/*   Updated: 2025/07/22 00:26:46 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	open_doc(t_shell shell)
+void	ft_builtin_env(t_shell *shell)
 {
-	int	fd;
+	int	i;
 
-	if (!shell.commands || !shell.commands[0] || !shell.commands[0]->redirs)
-		return;
-	fd = open(shell.commands[0]->redirs->file, O_RDONLY, 644);
-	if (fd == -1)
-		perror("zsh: permission denied");
+	ft_putstr_fd("DEBUG env: iniciando con ", 2);
+	ft_putnbr_fd(shell->env.count, 2);
+	ft_putstr_fd(" variables\n", 2);
+	i = 0;
+	while (i < shell->env.count)
+	{
+		ft_putstr_fd(shell->env.variables[i], 1);
+		ft_putstr_fd("\n", 1);
+		i++;
+	}
+	ft_putstr_fd("DEBUG env: terminado\n", 2);
 }
