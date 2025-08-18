@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
+/*   By: guigonza <guigonza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:22:00 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/05 18:25:04 by Guille           ###   ########.fr       */
+/*   Updated: 2025/06/17 17:58:36 by guigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,41 +53,11 @@ void	ft_update_env(t_env *env)
     env->pwd = new_pwd;
 }
 
-static char	*ft_generate_prompt(t_shell *shell)
-{
-	char	*cwd;
-	char	*prompt;
-	char	*temp;
-
-	(void)shell; // Evitar warning de variable no usada
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-		return (ft_strdup("minishell ->$ "));
-	
-	// Crear prompt: "minishell:directorio/ ->$ "
-	temp = ft_strjoin("minishell:", cwd);
-	free(cwd);
-	if (!temp)
-		return (ft_strdup("minishell ->$ "));
-	
-	prompt = ft_strjoin(temp, "/ ->$ ");
-	free(temp);
-	if (!prompt)
-		return (ft_strdup("minishell ->$ "));
-	
-	return (prompt);
-}
-
 char	*ft_prompt_line(t_shell *shell, const char *prompt)
 {
 	char	*line;
-	char	*dynamic_prompt;
 
-	(void)prompt; // Ignorar el prompt pasado como parámetro
-	dynamic_prompt = ft_generate_prompt(shell);
-	line = readline(dynamic_prompt);
-	free(dynamic_prompt);
-	
+	line = readline(prompt);
 	if (!line)
 	{
 		printf("exit\n");
