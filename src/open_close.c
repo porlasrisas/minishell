@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_close.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guigonza <guigonza@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 12:49:20 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/06/16 19:38:55 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:01:30 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ void	open_doc(t_shell shell)
 {
 	int	fd;
 
-	fd = open(shell.commands->redirs->file, O_RDONLY, 644);
+	if (!shell.commands || !shell.commands[0] || !shell.commands[0]->redirs)
+		return;
+	fd = open(shell.commands[0]->redirs->file, O_RDONLY, 644);
 	if (fd == -1)
-		ft_error("zsh: permission denied: ",1,1);
+		perror("zsh: permission denied");
 }
