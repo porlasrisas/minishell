@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_executor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 22:30:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/24 19:45:38 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/17 14:05:45 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static void	ft_handle_child_process(t_shell *shell, t_command *cmd)
 		handle_redirections_with_heredoc(cmd);
 	else
 		handle_redirections(cmd);
+    signal(SIGINT, SIG_DFL);
+    signal(SIGQUIT, SIG_DFL);
 	execve(path, cmd->args, shell->env.variables);
 	perror("execve failed");
 	exit(1);

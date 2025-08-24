@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 21:09:38 by carbon            #+#    #+#             */
-/*   Updated: 2025/07/22 00:26:46 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/21 12:49:41 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ void	ft_execute_pipeline_execve(t_shell *shell)
 		}
 		else if (pid == 0)
 		{
+			if (has_heredoc(cmd) && i == 0)
+				handle_redirections_with_heredoc(cmd);
+			else
+				handle_redirections(cmd);
 			if (prev_fd != -1)
 			{
 				dup2(prev_fd, STDIN_FILENO);
@@ -99,7 +103,7 @@ void	ft_execute_pipeline_execve(t_shell *shell)
 					exit(127);
 				}
 			}
-			handle_redirections(cmd);
+			
 			
 			// Debug: verificar argumentos antes de execve
 			printf("DEBUG: execve path='%s'\n", path);
