@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:47:53 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/24 19:45:38 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/18 20:08:12 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	main(int ac, char **av, char **env)
     t_command	**cmds;
     char		*line;
 
+	g_sigint_received = 0;
     (void)av;
     shell.exit_status = 0;
     shell.tokens = NULL;
@@ -56,10 +57,13 @@ int	main(int ac, char **av, char **env)
     
     printf("DEBUG: Variables de entorno inicializadas: %d\n", shell.env.count);
     
+	
 	if (ac >= 0)
 	{
 		while (1)
 		{
+			setup_shell_signals();
+    		g_sigint_received = 0;
 			line = ft_prompt_line(&shell, "minishell ->$ ");
             printf("Ruta actual: %s\n", shell.env.pwd);
             printf("Ruta antigua: %s\n", shell.env.oldpwd);

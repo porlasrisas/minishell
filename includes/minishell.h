@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/24 19:45:38 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/18 17:10:32 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 // Incluye las cabeceras de readline para manejar la entrada y el historial
 # include <readline/history.h>  // add_history, rl_clear_history
 # include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line,
+
+//variable global para las señales
+extern volatile sig_atomic_t g_sigint_received;
 
 // Tipo de redirección
 typedef enum e_redir_type
@@ -128,11 +131,11 @@ char	*ft_remove_quotes(char *token);
 char	*ft_get_env(t_env *env, const char *key);
 void	ft_update_env(t_env *env);
 void	ft_cd(t_shell *shell, char **args);
-int	ft_handle_cd(t_shell *shell);
+int		ft_handle_cd(t_shell *shell);
 void	tests(t_shell shell, t_command cmd);
-int ft_is_flag(char *token);
-void ft_args_with_flags(t_command *cmd);
-int	ft_is_builtin(char *cmd);
+int 	ft_is_flag(char *token);
+void 	ft_args_with_flags(t_command *cmd);
+int		ft_is_builtin(char *cmd);
 void	ft_builtin_pwd(void);
 void	ft_builtin_echo(char **args);
 void	ft_builtin_env(t_shell *shell);
@@ -157,5 +160,11 @@ void	handle_redirections_with_heredoc(t_command *cmd);
 void	handle_heredoc(const char *delimiter);
 char 	*read_heredoc_content(const char *delimiter);
 int		has_heredoc(t_command *cmd);
+
+// Signal handling
+void	setup_shell_signals(void);
+void	sigint_handler(int signo);
+void	heredoc_sigint_handler(int signo);
+void	setup_heredoc_signals(void);
 
 #endif
