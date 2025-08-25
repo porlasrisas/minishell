@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:13:51 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/20 13:36:32 by carbon           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:52:44 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,93 +27,45 @@ static t_command	*ft_new_command(void)
 	cmd->pipe_after = 0;
 	return (cmd);
 }
-static	void	ft_add_argument(t_shell *shell, t_command	*cmd, char *arg)
+static void	ft_add_argument(t_shell *shell, t_command *cmd, char *arg)
 {
 	size_t	new_size;
 	char	**new_array;
 	char	*processed_arg;
 
-	printf("DEBUG ft_add_argument: recibido arg='%s'\n", arg ? arg : "NULL");
 	new_size = (cmd->args_count + 2) * (sizeof(char *));
-	new_array = ft_realloc(cmd->args,cmd->args_count * sizeof(char *), new_size);
+	new_array = ft_realloc(cmd->args, cmd->args_count * sizeof(char *), new_size);
 	if (!new_array)
-	{
-		printf("ERROR: ft_realloc falló en ft_add_argument\n");
 		return;
-	}
 	cmd->args = new_array;
 	processed_arg = ft_process_token_quotes(shell, arg);
 	cmd->args[cmd->args_count] = processed_arg;
 	cmd->args[cmd->args_count + 1] = NULL;
 	cmd->args_count++;
-	printf("DEBUG ft_add_argument: guardado args[%d]='%s'\n", 
-		   cmd->args_count - 1, cmd->args[cmd->args_count - 1] ? cmd->args[cmd->args_count - 1] : "NULL");
 }
 
-static	void 	ft_add_redirection(t_command *cmd, char *file, t_redir_type	type)
+static void	ft_add_redirection(t_command *cmd, char *file, t_redir_type type)
 {
-	size_t	new_size;
-	t_redirection *new_array;
-	new_size = (cmd->redir_count + 1)  * (sizeof(t_redirection));
+	size_t			new_size;
+	t_redirection	*new_array;
+	char			*processed_file;
+
+	new_size = (cmd->redir_count + 1) * sizeof(t_redirection);
 	new_array = ft_realloc(cmd->redirs, cmd->redir_count * sizeof(t_redirection), new_size);
 	if (!new_array)
-	{
-		printf("ERROR: ft_realloc falló en ft_add_redirection\n");
 		return;
-	}
 	cmd->redirs = new_array;
 	cmd->redirs[cmd->redir_count].type = type;
 	cmd->redirs[cmd->redir_count].heredoc_content = NULL;
+	
+	// Para heredoc, procesar comillas del delimitador
 	if (type == REDIR_HEREDOC)
-	{
-		cmd->redirs[cmd->redir_count].file = ft_strdup(file);
-		cmd->redirs[cmd->redir_count].heredoc_content = NULL;
-	}
-	else if (type != PIPE)
-		cmd->redirs[cmd->redir_count].file = ft_strdup(file);
+		processed_file = ft_remove_quotes(file);
 	else
-		cmd->redirs[cmd->redir_count].file = ft_strdup("|");
+		processed_file = ft_strdup(file);
+		
+	cmd->redirs[cmd->redir_count].file = processed_file;
 	cmd->redir_count++;
-}
-/* static void ft_add_redirection(t_command *cmd, char *file_or_content, t_redir_type type)
-{
-    size_t	new_size;
-    t_redirection *new_array;
-    new_size = (cmd->redir_count + 1)  * (sizeof(t_redirection));
-    new_array = ft_realloc(cmd->redirs, cmd->redir_count * sizeof(t_redirection), new_size);
-    if (!new_array)
-    {
-        printf("ERROR: ft_realloc falló en ft_add_redirection\n");
-        return;
-    }
-    cmd->redirs = new_array;
-    cmd->redirs[cmd->redir_count].type = type;
-    if (type == REDIR_HEREDOC)
-    {
-        cmd->redirs[cmd->redir_count].file = NULL;
-        cmd->redirs[cmd->redir_count].heredoc_content = file_or_content; // heredoc content
-    }
-    else
-    {
-        cmd->redirs[cmd->redir_count].file = file_or_content; // filename
-        cmd->redirs[cmd->redir_count].heredoc_content = NULL;
-    }
-    cmd->redir_count++;
-} */
-
-t_redir_type	ft_get_redir_type(char *token)
-{
-	if (ft_strncmp(token, "<<", 2) == 0 && ft_strlen(token) == 2)
-		return (REDIR_HEREDOC);
-	if (ft_strncmp(token, "<",ft_strlen(token)) == 0)
-		return (REDIR_IN);
-	else if (ft_strncmp(token, ">>", 2) == 0 && ft_strlen(token) == 2)
-		return (REDIR_APPEND);
-	else if (ft_strncmp(token, ">",ft_strlen(token)) == 0)
-		return (REDIR_OUT);
-	else if (ft_strncmp(token, "|",ft_strlen(token)) == 0)
-		return (PIPE);
-	return (REDIR_UNKNOWN);
 }
 
  t_command	*ft_parse_single_cmd(t_shell *shell, char **tokens)
@@ -129,30 +81,22 @@ t_redir_type	ft_get_redir_type(char *token)
     while (tokens[i])
     {
         type = ft_get_redir_type(tokens[i]);
-        if (type == REDIR_IN || type == REDIR_OUT || 
-            type == REDIR_APPEND || type == REDIR_HEREDOC)
+        if (type == REDIR_IN || type == REDIR_OUT || type == REDIR_APPEND || type == REDIR_HEREDOC)
         {
             if (!tokens[i + 1])
-            {
-                printf("ERROR: redirección sin archivo\n");
                 return (NULL);
-            }
+            // Para heredoc, no expandas aquí; solo guarda el delimitador literal
             ft_add_redirection(cmd, tokens[i + 1], type);
             i += 2;
         }
-        else if (type == PIPE)
-        {
+        else if (type == PIPE || type == SEMICOLON)
             break;
-        }
         else
         {
             ft_add_argument(shell, cmd, tokens[i]);
             i++;
         }
     }
-    
-    // Procesar flags después del parseo básico
     ft_args_with_flags(cmd);
-    
     return (cmd);
 }

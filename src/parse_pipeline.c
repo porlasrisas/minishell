@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 20:10:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/07/22 16:41:51 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:24:37 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,22 @@ static void	ft_process_pipe_segment(t_shell *shell, t_command **cmds)
 	ft_error(NULL, 1, 1, &format);
 	if (cmds[shell->cmd_idx])
 		cmds[shell->cmd_idx]->pipe_after = 1;
+	shell->cmd_idx++;
+	shell->start_idx = shell->i + 1;
+}
+
+static void	ft_process_semicolon_segment(t_shell *shell, t_command **cmds)
+{
+	t_format	format;
+
+	shell->segment = ft_copy_token_segment(shell, shell->start_idx, shell->i);
+	cmds[shell->cmd_idx] = ft_parse_single_cmd(shell, shell->segment);
+	format.ptr = (void **)shell->segment;
+	format.ptr1 = NULL;
+	format.depth = 0;
+	ft_error(NULL, 1, 1, &format);
+	if (cmds[shell->cmd_idx])
+		cmds[shell->cmd_idx]->pipe_after = 0;  // Semicolon no es pipe
 	shell->cmd_idx++;
 	shell->start_idx = shell->i + 1;
 }
@@ -61,6 +77,8 @@ static t_command	**ft_parse_pipeline(t_shell *shell)
 	{
 		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE)
 			ft_process_pipe_segment(shell, cmds);
+		else if (ft_get_redir_type(shell->tokens[shell->i]) == SEMICOLON)
+			ft_process_semicolon_segment(shell, cmds);
 		shell->i++;
 	}
 	ft_process_final_segment(shell, cmds);

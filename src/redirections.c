@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/18 20:19:10 by carbon            #+#    #+#             */
-/*   Updated: 2025/08/24 00:47:22 by carbon           ###   ########.fr       */
+/*   Created: 2025/06/20 12:00:00 by guigonza          #+#    #+#             */
+/*   Updated: 2025/08/25 13:01:46 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include "minishell.h"
 
 void	handle_redirections(t_command *cmd)
 {
@@ -20,7 +20,6 @@ void	handle_redirections(t_command *cmd)
 	i = 0;
 	while (i < cmd->redir_count)
 	{
-		printf("DEBUG: Procesando redirección %d tipo %d\n", i, cmd->redirs[i].type);
 		if (cmd->redirs[i].type == REDIR_IN)
 		{
 			fd = open(cmd->redirs[i].file, O_RDONLY);
@@ -37,7 +36,6 @@ void	handle_redirections(t_command *cmd)
 			fd = open(cmd->redirs[i].file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (fd == -1)
 			{
-				printf("ERROR: No se pudo abrir el archivo %s\n", cmd->redirs[i].file);
 				perror(cmd->redirs[i].file);
 				exit(1);
 			}
@@ -61,9 +59,9 @@ void	handle_redirections(t_command *cmd)
 
 void	handle_redirections_with_heredoc(t_command *cmd)
 {
-	int		fd;
-	int		pipefd[2];
-	int		i;
+	int	 fd;
+	int	 pipefd[2];
+	int	 i;
 
 	i = 0;
 	while (i < cmd->redir_count)
@@ -92,7 +90,6 @@ void	handle_redirections_with_heredoc(t_command *cmd)
 		}
 		else if (cmd->redirs[i].type == REDIR_APPEND)
 		{
-			printf("DEBUG: Redir APPEND");
 			fd = open(cmd->redirs[i].file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (fd == -1)
 			{
@@ -104,7 +101,6 @@ void	handle_redirections_with_heredoc(t_command *cmd)
 		}
 		else if (cmd->redirs[i].type == REDIR_HEREDOC)
 		{
-			printf("DEBUG: Procesando heredoc\n");
 			if (!cmd->redirs[i].heredoc_content)
 				cmd->redirs[i].heredoc_content = read_heredoc_content(cmd->redirs[i].file);
 			if (cmd->redirs[i].heredoc_content)

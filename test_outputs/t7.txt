@@ -1,0 +1,4 @@
+zsh: : No such file or directory
+zsh: : No such file or directory
+       2
+exit

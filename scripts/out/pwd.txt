@@ -1,0 +1,2 @@
+/Users/Guille/Desktop/42_projects/minishell
+exit

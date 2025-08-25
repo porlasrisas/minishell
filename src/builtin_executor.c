@@ -3,16 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_executor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/21 22:30:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/17 14:05:45 by carbon           ###   ########.fr       */
+/*   Created: 2025/08/24 20:40:00 by Guille            #+#    #+#             */
+/*   Updated: 2025/08/24 23:26:39 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_handle_child_process(t_shell *shell, t_command *cmd)
+static void	print_exec_error_and_exit(char **argv, int code)
+{
+	if (code == 127)
+		fprintf(stderr, "minishell: %s: command not found\n", argv[0]);
+	else if (code == 126)
+		fprintf(stderr, "minishell: %s: Permission denied\n", argv[0]);
+	exit(code);
+}
+
+static void	exec_external_in_child(t_shell *shell, t_command *cmd)
 {
 	char	*path;
 
@@ -21,24 +30,20 @@ static void	ft_handle_child_process(t_shell *shell, t_command *cmd)
 	{
 		path = ft_resolve_command_path(shell, cmd->args[0]);
 		if (!path)
-		{
-			printf("DEBUG: Comando '%s' no encontrado\n", cmd->args[0]);
-			exit(127);
-		}
+			print_exec_error_and_exit(cmd->args, 127);
 	}
-	// Usar la función con heredoc para todas las redirecciones
-	if (has_heredoc(cmd))
-		handle_redirections_with_heredoc(cmd);
-	else
-		handle_redirections(cmd);
-    signal(SIGINT, SIG_DFL);
-    signal(SIGQUIT, SIG_DFL);
+	apply_redirs(cmd);
+	setup_child_signals();
 	execve(path, cmd->args, shell->env.variables);
-	perror("execve failed");
+	if (errno == ENOENT)
+		print_exec_error_and_exit(cmd->args, 127);
+	if (errno == EACCES)
+		print_exec_error_and_exit(cmd->args, 126);
+	perror("execve");
 	exit(1);
 }
 
-static void	ft_execute_external_command(t_shell *shell, t_command *cmd)
+static void	execute_external_command(t_shell *shell, t_command *cmd)
 {
 	pid_t	pid;
 	int		status;
@@ -50,60 +55,70 @@ static void	ft_execute_external_command(t_shell *shell, t_command *cmd)
 		return ;
 	}
 	else if (pid == 0)
-		ft_handle_child_process(shell, cmd);
+		exec_external_in_child(shell, cmd);
 	else
 	{
 		waitpid(pid, &status, 0);
-		shell->exit_status = WEXITSTATUS(status);
+		update_status_from_wait(shell, status);
 	}
+}
+
+static int	exec_builtin_with_redirs(t_shell *shell, t_command *cmd)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		return (0);
+	}
+	else if (pid == 0)
+	{
+		apply_redirs(cmd);
+		setup_child_signals();
+		ft_execute_builtin(shell, cmd);
+		exit(shell->exit_status);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		update_status_from_wait(shell, status);
+	}
+	return (1);
 }
 
 void	ft_execute_simple_command(t_shell *shell)
 {
 	t_command	*cmd;
-	pid_t		pid;
-	int			status;
 
 	if (!shell || !shell->commands || !shell->commands[0])
 		return ;
 	cmd = shell->commands[0];
 	if (!cmd->args || !cmd->args[0])
-	{
-		printf("DEBUG: Comando vacío, ignorando\n");
 		return ;
-	}
-	printf("DEBUG: Ejecutando comando simple '%s'\n", cmd->args[0]);
-	
-	// Si hay redirecciones y es un builtin, necesitamos fork
 	if (ft_is_builtin(cmd->args[0]) && cmd->redir_count == 0)
 	{
 		ft_execute_builtin(shell, cmd);
 		return ;
 	}
-	else if (ft_is_builtin(cmd->args[0]) && cmd->redir_count > 0)
+	if (ft_is_builtin(cmd->args[0]) && cmd->redir_count > 0)
 	{
-		// Fork para builtin con redirecciones
-		pid = fork();
-		if (pid == -1)
+		if (exec_builtin_with_redirs(shell, cmd))
+			return ;
+	}
+	/* Si no hay barra y PATH no contiene el comando, devolver 127 sin forkar */
+	if (!ft_strchr(cmd->args[0], '/'))
+	{
+		char *resolved = ft_resolve_command_path(shell, cmd->args[0]);
+		if (!resolved)
 		{
-			perror("fork");
+			fprintf(stderr, "minishell: %s: command not found\n", cmd->args[0]);
+			shell->exit_status = 127;
 			return ;
 		}
-		else if (pid == 0)
-		{
-			if (has_heredoc(cmd))
-				handle_redirections_with_heredoc(cmd);
-			else
-				handle_redirections(cmd);
-			ft_execute_builtin(shell, cmd);
-			exit(shell->exit_status);
-		}
-		else
-		{
-			waitpid(pid, &status, 0);
-			shell->exit_status = WEXITSTATUS(status);
-		}
-		return ;
+		free(resolved);
 	}
-	ft_execute_external_command(shell, cmd);
+	execute_external_command(shell, cmd);
 }

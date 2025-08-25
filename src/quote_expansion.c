@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 01:00:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/05 18:45:12 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/25 12:57:00 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ static char	*ft_extract_var_name(char *str, int *i)
 		if (str[*i] == '}')
 			(*i)++;
 		return (var_name);
+	}
+	// Caso especial para $?
+	if (str[*i] == '?')
+	{
+		(*i)++;
+		return (ft_strdup("?"));
 	}
 	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
 		(*i)++;

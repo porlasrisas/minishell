@@ -2,15 +2,34 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/21 20:11:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/05 18:25:30 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	is_token(const char *s, const char *tok)
+{
+	return (s && tok && ft_strncmp(s, tok, ft_strlen(tok)) == 0);
+}
+
+t_redir_type	ft_get_redir_type(char *token)
+{
+	if (!token || *token == '\0')
+		return (REDIR_UNKNOWN);
+	if (is_token(token, "|"))
+		return (PIPE);
+	if (is_token(token, ";"))
+		return (SEMICOLON);
+	if (is_token(token, "<<"))
+		return (REDIR_HEREDOC);
+	if (is_token(token, ">>"))
+		return (REDIR_APPEND);
+	if (is_token(token, ">"))
+		return (REDIR_OUT);
+	if (is_token(token, "<"))
+		return (REDIR_IN);
+	return (REDIR_UNKNOWN);
+}
 
 int	ft_count_pipes(t_shell *shell)
 {
@@ -20,7 +39,8 @@ int	ft_count_pipes(t_shell *shell)
 	count = 1;
 	while (shell->tokens[shell->i])
 	{
-		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE)
+		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE ||
+			ft_get_redir_type(shell->tokens[shell->i]) == SEMICOLON)
 			count++;
 		shell->i++;
 	}
@@ -50,16 +70,19 @@ int	ft_validate_pipe_syntax(t_shell *shell)
 {
 	if (!shell->tokens[0])
 		return (0);
-	if (ft_get_redir_type(shell->tokens[0]) == PIPE)
+	if (ft_get_redir_type(shell->tokens[0]) == PIPE || 
+		ft_get_redir_type(shell->tokens[0]) == SEMICOLON)
 		return (0);
 	shell->i = 0;
 	while (shell->tokens[shell->i])
 	{
-		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE)
+		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE ||
+			ft_get_redir_type(shell->tokens[shell->i]) == SEMICOLON)
 		{
 			if (!shell->tokens[shell->i + 1])
 				return (0);
-			if (ft_get_redir_type(shell->tokens[shell->i + 1]) == PIPE)
+			if (ft_get_redir_type(shell->tokens[shell->i + 1]) == PIPE ||
+				ft_get_redir_type(shell->tokens[shell->i + 1]) == SEMICOLON)
 				return (0);
 		}
 		shell->i++;
@@ -77,7 +100,7 @@ char	*ft_remove_quotes(char *token)
 	len = ft_strlen(token);
 	if (len < 2)
 		return (ft_strdup(token));
-	if ((token[0] == '"' && token[len - 1] == '"') ||
+	if ((token[0] == '\"' && token[len - 1] == '\"') ||
 		(token[0] == '\'' && token[len - 1] == '\''))
 	{
 		result = ft_substr(token, 1, len - 2);

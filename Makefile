@@ -6,7 +6,7 @@
 #    By: Guille <Guille@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/08/05 18:24:11 by Guille           ###   ########.fr        #
+#    Updated: 2025/08/24 21:42:03 by Guille           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,9 @@ SRC = $(SRC_DIR)/shell.c \
 	  $(SRC_DIR)/cd.c \
 	  $(SRC_DIR)/tests.c \
 	  $(SRC_DIR)/parse_args.c \
+	  $(SRC_DIR)/parse_args_utils.c \
 	  $(SRC_DIR)/pipes.c \
+	  $(SRC_DIR)/pipes_utils.c \
       $(SRC_DIR)/enviroment.c \
       $(SRC_DIR)/executor.c \
       $(SRC_DIR)/redirections.c \
@@ -42,7 +44,10 @@ SRC = $(SRC_DIR)/shell.c \
 	  $(SRC_DIR)/builtin_executor.c \
 	  $(SRC_DIR)/quote_expansion.c \
 	  $(SRC_DIR)/here_doc.c \
-      $(SRC_DIR)/signals.c
+	  $(SRC_DIR)/signals.c \
+	  $(SRC_DIR)/path.c \
+	  $(SRC_DIR)/executor_utils.c \
+	  $(SRC_DIR)/builtin_echo.c
 
 # Archivos objeto correspondientes
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

@@ -2,17 +2,18 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/10 17:01:18 by carbon            #+#    #+#             */
-/*   Updated: 2025/08/18 20:10:01 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <signal.h>
 #include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
+extern char *rl_line_buffer;
+extern int rl_point;
+extern int rl_end;
 
 volatile sig_atomic_t g_sigint_received = 0;
 
@@ -22,7 +23,12 @@ void	sigint_handler(int signo)
     g_sigint_received = 1;
     write(1, "\n", 1);
     rl_on_new_line();
-    rl_replace_line("", 0);
+    if (rl_line_buffer)
+    {
+        rl_line_buffer[0] = '\0';
+        rl_point = 0;
+        rl_end = 0;
+    }
     rl_redisplay();
 }
 

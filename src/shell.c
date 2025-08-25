@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:22:00 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/05 18:25:04 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/24 20:29:30 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ char	*ft_prompt_line(t_shell *shell, const char *prompt)
 	
 	if (!line)
 	{
-		printf("exit\n");
 		shell->exit_status = 1;
 		return (NULL);
 	}
