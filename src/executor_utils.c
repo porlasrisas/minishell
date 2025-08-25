@@ -6,17 +6,11 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 21:45:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/24 20:50:32 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/25 16:33:46 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	setup_child_signals(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-}
 
 void	apply_redirs(t_command *cmd)
 {
@@ -39,4 +33,22 @@ void	update_status_from_wait(t_shell *shell, int status)
 	}
 	else
 		shell->exit_status = WEXITSTATUS(status);
+}
+
+int	ft_check_simple_command(t_shell *shell)
+{
+	t_command	*cmd;
+
+	if (!shell || !shell->commands || !shell->commands[0])
+		return (0);
+	cmd = shell->commands[0];
+	if (!cmd->args || !cmd->args[0])
+		return (0);
+	return (1);
+}
+
+void	ft_handle_command_not_found(t_shell *shell, char *cmd_name)
+{
+	fprintf(stderr, "minishell: %s: command not found\n", cmd_name);
+	shell->exit_status = 127;
 }

@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:41:46 by carbon            #+#    #+#             */
-/*   Updated: 2025/08/24 21:04:48 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/25 16:59:47 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,32 @@ void	handle_heredoc(const char *delimiter)
 	close(fd);
 }
 
+char	*append_line_to_content(char *content, char *line, size_t *len)
+{
+	size_t	line_len;
+	char	*new_content;
+
+	line_len = ft_strlen(line);
+	new_content = malloc(*len + line_len + 2);
+	if (!new_content)
+		return (NULL);
+	if (content)
+	{
+		ft_memcpy(new_content, content, *len);
+		free(content);
+	}
+	ft_memcpy(new_content + *len, line, line_len);
+	new_content[*len + line_len] = '\n';
+	new_content[*len + line_len + 1] = '\0';
+	*len += line_len + 1;
+	return (new_content);
+}
+
 char	*read_heredoc_content(const char *delimiter)
 {
 	char	*line;
 	char	*content;
 	size_t	len;
-	size_t	line_len;
-	char	*new_content;
 
 	content = NULL;
 	len = 0;
@@ -56,18 +75,7 @@ char	*read_heredoc_content(const char *delimiter)
 			free(line);
 			break ;
 		}
-		line_len = ft_strlen(line);
-		new_content = malloc(len + line_len + 2);
-		if (content)
-		{
-			ft_memcpy(new_content, content, len);
-			free(content);
-		}
-		ft_memcpy(new_content + len, line, line_len);
-		new_content[len + line_len] = '\n';
-		new_content[len + line_len + 1] = '\0';
-		content = new_content;
-		len += line_len + 1;
+		content = append_line_to_content(content, line, &len);
 		free(line);
 	}
 	return (content);

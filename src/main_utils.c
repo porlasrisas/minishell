@@ -6,26 +6,16 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 00:00:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/25 15:58:35 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/25 16:08:38 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_init_env(t_shell *shell, char **env)
+int	ft_copy_env_vars(t_shell *shell, char **env)
 {
 	int	i;
 
-	shell->env.count = 0;
-	while (env[shell->env.count])
-		shell->env.count++;
-	shell->env.variables = malloc(sizeof(char *) * (shell->env.count + 1));
-	if (!shell->env.variables)
-	{
-		ft_error("Error al asignar memoria para entorno\n", 1, 2,
-			&shell->free);
-		return (-1);
-	}
 	i = 0;
 	while (i < shell->env.count)
 	{
@@ -40,6 +30,20 @@ int	ft_init_env(t_shell *shell, char **env)
 	}
 	shell->env.variables[i] = NULL;
 	return (0);
+}
+
+int	ft_init_env(t_shell *shell, char **env)
+{
+	shell->env.count = 0;
+	while (env[shell->env.count])
+		shell->env.count++;
+	shell->env.variables = malloc(sizeof(char *) * (shell->env.count + 1));
+	if (!shell->env.variables)
+	{
+		ft_error("Error al asignar memoria para entorno\n", 1, 2, &shell->free);
+		return (-1);
+	}
+	return (ft_copy_env_vars(shell, env));
 }
 
 int	ft_process_line(t_shell *shell, char *line, t_command ***cmds)

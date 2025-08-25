@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 12:49:20 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/07/21 21:01:30 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/25 16:46:38 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	open_doc(t_shell shell)
 	int	fd;
 
 	if (!shell.commands || !shell.commands[0] || !shell.commands[0]->redirs)
-		return;
+		return ;
 	fd = open(shell.commands[0]->redirs->file, O_RDONLY, 644);
 	if (fd == -1)
 		perror("zsh: permission denied");

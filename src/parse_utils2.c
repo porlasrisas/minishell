@@ -1,37 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections.c                                     :+:      :+:    :+:   */
+/*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 12:00:00 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/25 17:36:30 by Guille           ###   ########.fr       */
+/*   Created: 2025/08/25 00:00:00 by Guille            #+#    #+#             */
+/*   Updated: 2025/08/25 16:58:56 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_redirections(t_command *cmd)
+char	*ft_remove_quotes(char *token)
 {
-	int	i;
+	char	*result;
+	int		len;
 
-	i = 0;
-	while (i < cmd->redir_count)
+	if (!token)
+		return (NULL);
+	len = ft_strlen(token);
+	if (len < 2)
+		return (ft_strdup(token));
+	if ((token[0] == '\"' && token[len - 1] == '\"') || (token[0] == '\''
+			&& token[len - 1] == '\''))
 	{
-		handle_single_redirection(&cmd->redirs[i]);
-		i++;
+		result = ft_substr(token, 1, len - 2);
+		return (result);
 	}
-}
-
-void	handle_redirections_with_heredoc(t_command *cmd)
-{
-	int	i;
-
-	i = 0;
-	while (i < cmd->redir_count)
-	{
-		handle_single_redirection(&cmd->redirs[i]);
-		i++;
-	}
+	return (ft_strdup(token));
 }

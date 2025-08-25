@@ -1,0 +1,54 @@
+# Archivos compilados
+*.o
+*.a
+minishell
+
+# Directorio de objetos
+obj/
+
+# Archivos de prueba y desarrollo
+test*
+TEST*
+*test*
+*.sh
+*.txt
+archivo_test.txt
+cambios
+cambios.txt
+complete_tester.sh
+comprehensive_test.sh
+extreme_stress_test.sh
+flujo.txt
+full_test_minishell.sh
+memory_test.sh
+norm.md
+run_all_tests.sh
+run_minishell_tests.sh
+test_analysis.sh
+test_heredoc_direct.sh
+test_heredoc.txt
+test_metachar.c
+test_minishell.sh
+TEST_README.md
+test_simple.c
+test_simple.sh
+tokenizer_debug
+
+# Directorios temporales
+&&/
+cd/
+pwd/
+scripts/
+test_outputs/
+
+# Archivos de sistema
+.DS_Store
+*~
+.vscode/
+.idea/
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+*.swo

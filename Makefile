@@ -6,7 +6,7 @@
 #    By: Guille <Guille@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/08/25 15:59:44 by Guille           ###   ########.fr        #
+#    Updated: 2025/08/25 17:53:24 by Guille           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,28 +26,39 @@ SRC = $(SRC_DIR)/shell.c \
       $(SRC_DIR)/main_utils.c \
       $(SRC_DIR)/parser.c \
 	  $(SRC_DIR)/parse_tokens.c\
+	  $(SRC_DIR)/parse_tokens_utils.c \
 	  $(SRC_DIR)/parse_utils.c \
+	  $(SRC_DIR)/parse_utils2.c \
 	  $(SRC_DIR)/parse_pipeline.c \
 	  $(SRC_DIR)/cd.c \
 	  $(SRC_DIR)/tests.c \
 	  $(SRC_DIR)/parse_args.c \
 	  $(SRC_DIR)/parse_args_utils.c \
 	  $(SRC_DIR)/pipes.c \
+	  $(SRC_DIR)/pipes_helpers.c \
+	  $(SRC_DIR)/pipes_helpers2.c \
 	  $(SRC_DIR)/pipes_utils.c \
       $(SRC_DIR)/enviroment.c \
       $(SRC_DIR)/executor.c \
       $(SRC_DIR)/redirections.c \
+      $(SRC_DIR)/redirections_helpers.c \
 	  $(SRC_DIR)/builtings.c \
 	  $(SRC_DIR)/builtin_basic.c \
 	  $(SRC_DIR)/builtin_env.c \
 	  $(SRC_DIR)/builtin_export.c \
+	  $(SRC_DIR)/builtin_export_utils.c \
+	  $(SRC_DIR)/builtin_export_utils2.c \
+	  $(SRC_DIR)/builtin_unset.c \
 	  $(SRC_DIR)/builtin_exit.c \
 	  $(SRC_DIR)/builtin_executor.c \
 	  $(SRC_DIR)/quote_expansion.c \
+	  $(SRC_DIR)/quote_expansion_helpers.c \
+	  $(SRC_DIR)/quote_expansion_utils.c \
 	  $(SRC_DIR)/here_doc.c \
 	  $(SRC_DIR)/signals.c \
 	  $(SRC_DIR)/path.c \
 	  $(SRC_DIR)/executor_utils.c \
+	  $(SRC_DIR)/executor_external.c \
 	  $(SRC_DIR)/builtin_echo.c
 
 # Archivos objeto correspondientes

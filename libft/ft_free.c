@@ -39,14 +39,14 @@ static void	ft_free_by_depth(t_format *format)
 	}
 }
 
-static void ft_deep_free(void **ptr)
+static void	ft_deep_free(void **ptr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!ptr)
 		return ;
-	while(ptr[i])
+	while (ptr[i])
 	{
 		free(ptr[i]);
 		ptr[i] = NULL;
@@ -65,7 +65,7 @@ static void	ft_shallow_free(void *ptr)
 	}
 }
 
-/* Habría ue ver cómo poder poner mensajes personalizados con variables 
+/* Habría ue ver cómo poder poner mensajes personalizados con variables
 Ej: permission denied y el input del archivo que se quiere abrir/cerrar*/
 
 void	ft_error(const char *custom_msg, int count, int type, ...)
@@ -86,7 +86,7 @@ void	ft_error(const char *custom_msg, int count, int type, ...)
 	{
 		format = va_arg(ap, t_format *);
 		if (!format)
-            continue;
+			continue ;
 		if (type == 0)
 			ft_shallow_free(format->ptr1);
 		if (type == 1)

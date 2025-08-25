@@ -14,7 +14,7 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	size_t	i;	
+	size_t	i;
 
 	i = 0;
 	while (s[i] != '\0')
@@ -23,7 +23,7 @@ char	*ft_strchr(const char *s, int c)
 			return ((char *)&s[i]);
 		i++;
 	}
-	if ((unsigned char) c == '\0')
+	if ((unsigned char)c == '\0')
 		return ((char *)&s[i]);
 	return (NULL);
 }

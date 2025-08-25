@@ -2,7 +2,8 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   pipes_utils.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+      */
+/*                                                    +:+ +:+        
+	+:+      */
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 22:52:10 by Guille            #+#    #+#             */
@@ -53,7 +54,8 @@ void	setup_child_pipes(int prev_fd, t_command *cmd, int pipe_fd[2])
 	}
 }
 
-void	parent_after_fork(pid_t pid, int *prev_fd, int pipe_fd[2], t_command *cmd)
+void	parent_after_fork(pid_t pid, int *prev_fd, int pipe_fd[2],
+		t_command *cmd)
 {
 	if (*prev_fd != -1)
 		close(*prev_fd);
@@ -71,40 +73,8 @@ void	parent_after_fork(pid_t pid, int *prev_fd, int pipe_fd[2], t_command *cmd)
 	(void)pid;
 }
 
-void	finalize_status(t_shell *shell, int last_status)
-{
-	int		 sig;
-
-	if (WIFSIGNALED(last_status))
-	{
-		sig = WTERMSIG(last_status);
-		if (sig == SIGQUIT)
-			write(2, "Quit: 3\n", 8);
-		shell->exit_status = 128 + sig;
-	}
-	else
-		shell->exit_status = WEXITSTATUS(last_status);
-}
-
-static void	execve_or_die(char *path, char **argv, char **envp)
-{
-	execve(path, argv, envp);
-	if (errno == ENOENT)
-	{
-		fprintf(stderr, "minishell: %s: command not found\n", argv[0]);
-		exit(127);
-	}
-	else if (errno == EACCES)
-	{
-		fprintf(stderr, "minishell: %s: Permission denied\n", argv[0]);
-		exit(126);
-	}
-	perror("execve");
-	exit(1);
-}
-
 void	pipe_exec_child(t_shell *shell, t_command *cmd, int prev_fd,
-	int pipe_fd[2])
+		int pipe_fd[2])
 {
 	char	*path;
 

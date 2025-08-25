@@ -37,6 +37,6 @@ char	*ft_strjoin_free(char *s1, const char *s2)
 		j++;
 	}
 	result[i] = '\0';
-	free (s1);
+	free(s1);
 	return (result);
 }
