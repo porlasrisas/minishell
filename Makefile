@@ -6,7 +6,7 @@
 #    By: Guille <Guille@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/08/24 21:42:03 by Guille           ###   ########.fr        #
+#    Updated: 2025/08/25 15:59:44 by Guille           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ INCLUDES    = -I. -Iincludes -I$(SRC_DIR) -I$(LIBFT_DIR)
 # Archivos fuente listados explícitamente
 SRC = $(SRC_DIR)/shell.c \
       $(SRC_DIR)/main.c \
+      $(SRC_DIR)/main_utils.c \
       $(SRC_DIR)/parser.c \
 	  $(SRC_DIR)/parse_tokens.c\
 	  $(SRC_DIR)/parse_utils.c \

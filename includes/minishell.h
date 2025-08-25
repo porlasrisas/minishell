@@ -46,59 +46,59 @@ typedef enum e_redir_type
 	REDIR_HEREDOC,
 	SEMICOLON,
 	REDIR_UNKNOWN
-} t_redir_type;
+}	t_redir_type;
 
 typedef struct s_redirection
 {
-	char		*file;
-	char		*heredoc_content;
+	char			*file;
+	char			*heredoc_content;
 	t_redir_type	type;
-} t_redirection;
+}	t_redirection;
 
 typedef struct s_command
 {
-	char		**args;
-	char		**args_flagged;
-	int			args_count;
+	char			**args;
+	char			**args_flagged;
+	int				args_count;
 	t_redirection	*redirs;
-	int			redir_count;
-	int			pipe_after;
-} t_command;
+	int				redir_count;
+	int				pipe_after;
+}	t_command;
 
 typedef struct s_history
 {
-	char		**commands;
-	int			count;
-} t_history;
+	char			**commands;
+	int				count;
+}	t_history;
 
 typedef struct s_env
 {
-	char		**variables;
-	char		*pwd;
-	char		*oldpwd;
-	int			count;
-} t_env;
+	char			**variables;
+	char			*pwd;
+	char			*oldpwd;
+	int				count;
+}	t_env;
 
 typedef struct s_shell
 {
-	char		*input_line;
-	char		**tokens;
-	int			token_count;
-	int			i;
-	int			j;
-	char		*tok;
+	char			*input_line;
+	char			**tokens;
+	int				token_count;
+	int				i;
+	int				j;
+	char			*tok;
 	t_redirection	*redir;
-	t_command	**commands;
-	int			command_count;
-	int			start_idx;
-	int			cmd_idx;
-	int			num_cmds;
-	char		**segment;
-	t_history	history;
-	t_env		env;
-	t_format	*free;
-	int			exit_status;
-} t_shell;
+	t_command		**commands;
+	int				command_count;
+	int				start_idx;
+	int				cmd_idx;
+	int				num_cmds;
+	char			**segment;
+	t_history		history;
+	t_env			env;
+	t_format		*free;
+	int				exit_status;
+}	t_shell;
 
 char			*ft_prompt_line(t_shell *shell, const char *prompt);
 int				ft_is_metachar(char c);
@@ -163,5 +163,10 @@ void			setup_heredoc_signals(void);
 void			setup_child_signals(void);
 void			apply_redirs(t_command *cmd);
 void			update_status_from_wait(t_shell *shell, int status);
+
+/* main utils */
+int				ft_init_env(t_shell *shell, char **env);
+int				ft_process_line(t_shell *shell, char *line, t_command ***cmds);
+void			ft_main_loop(t_shell *shell, char **line, t_command ***cmds);
 
 #endif
