@@ -1,3 +1,0 @@
-zsh: : No such file or directory
-/Users/Guille/Desktop/42_projects/minishell
-exit

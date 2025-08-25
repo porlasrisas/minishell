@@ -1,4 +1,0 @@
-couldn't execute "./minishell": no such file or directory
-    while executing
-"spawn ./minishell"
-    (file "scripts/full_out/tab_expect.tcl" line 1)
