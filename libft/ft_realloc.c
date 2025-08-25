@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guigonza <guigonza@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 13:28:11 by guigonza          #+#    #+#             */
-/*   Updated: 2025/06/03 13:36:09 by guigonza         ###   ########.fr       */
+/*   Updated: 2025/08/25 16:46:38 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
-	void *new;
-	size_t size;
+	void	*new;
+	size_t	size;
 
 	if (new_size == 0)
 	{

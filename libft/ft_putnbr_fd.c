@@ -20,7 +20,7 @@ void	ft_putnbr_fd(int n, int fd)
 	if (copy < 0)
 	{
 		copy = (copy * -1);
-		write (fd, "-", 1);
+		write(fd, "-", 1);
 	}
 	if (copy > 9)
 	{

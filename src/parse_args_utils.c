@@ -2,7 +2,8 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parse_args_utils.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+      */
+/*                                                    +:+ +:+        
+	+:+      */
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 22:30:10 by Guille            #+#    #+#             */
@@ -33,8 +34,8 @@ char	**ft_realloc_flagged(char **flagged, int count)
 {
 	char	**new_flagged;
 
-	new_flagged = ft_realloc(flagged, sizeof(char *) * count,
-		sizeof(char *) * (count + 2));
+	new_flagged = ft_realloc(flagged, sizeof(char *) * count, sizeof(char *)
+			* (count + 2));
 	if (!new_flagged)
 		return (flagged);
 	return (new_flagged);

@@ -2,6 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/25 00:00:00 by Guille            #+#    #+#             */
+/*   Updated: 2025/08/25 16:58:56 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +44,8 @@ int	ft_count_pipes(t_shell *shell)
 	count = 1;
 	while (shell->tokens[shell->i])
 	{
-		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE ||
-			ft_get_redir_type(shell->tokens[shell->i]) == SEMICOLON)
+		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE
+			|| ft_get_redir_type(shell->tokens[shell->i]) == SEMICOLON)
 			count++;
 		shell->i++;
 	}
@@ -70,41 +75,22 @@ int	ft_validate_pipe_syntax(t_shell *shell)
 {
 	if (!shell->tokens[0])
 		return (0);
-	if (ft_get_redir_type(shell->tokens[0]) == PIPE || 
-		ft_get_redir_type(shell->tokens[0]) == SEMICOLON)
+	if (ft_get_redir_type(shell->tokens[0]) == PIPE
+		|| ft_get_redir_type(shell->tokens[0]) == SEMICOLON)
 		return (0);
 	shell->i = 0;
 	while (shell->tokens[shell->i])
 	{
-		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE ||
-			ft_get_redir_type(shell->tokens[shell->i]) == SEMICOLON)
+		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE
+			|| ft_get_redir_type(shell->tokens[shell->i]) == SEMICOLON)
 		{
 			if (!shell->tokens[shell->i + 1])
 				return (0);
-			if (ft_get_redir_type(shell->tokens[shell->i + 1]) == PIPE ||
-				ft_get_redir_type(shell->tokens[shell->i + 1]) == SEMICOLON)
+			if (ft_get_redir_type(shell->tokens[shell->i + 1]) == PIPE
+				|| ft_get_redir_type(shell->tokens[shell->i + 1]) == SEMICOLON)
 				return (0);
 		}
 		shell->i++;
 	}
 	return (1);
-}
-
-char	*ft_remove_quotes(char *token)
-{
-	char	*result;
-	int		len;
-
-	if (!token)
-		return (NULL);
-	len = ft_strlen(token);
-	if (len < 2)
-		return (ft_strdup(token));
-	if ((token[0] == '\"' && token[len - 1] == '\"') ||
-		(token[0] == '\'' && token[len - 1] == '\''))
-	{
-		result = ft_substr(token, 1, len - 2);
-		return (result);
-	}
-	return (ft_strdup(token));
 }
