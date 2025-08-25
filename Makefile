@@ -6,7 +6,7 @@
 #    By: Guille <Guille@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/08/25 17:53:24 by Guille           ###   ########.fr        #
+#    Updated: 2025/08/25 18:42:41 by Guille           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,6 @@ SRC = $(SRC_DIR)/shell.c \
 	  $(SRC_DIR)/parse_utils2.c \
 	  $(SRC_DIR)/parse_pipeline.c \
 	  $(SRC_DIR)/cd.c \
-	  $(SRC_DIR)/tests.c \
 	  $(SRC_DIR)/parse_args.c \
 	  $(SRC_DIR)/parse_args_utils.c \
 	  $(SRC_DIR)/pipes.c \

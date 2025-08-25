@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 00:00:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/25 16:08:38 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/25 18:45:19 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,16 @@ void	ft_main_loop(t_shell *shell, char **line, t_command ***cmds)
 		{
 			write(1, "exit\n", 5);
 			break ;
+		}
+		if (g_sigint_received)
+		{
+			shell->exit_status = 130;
+			continue ;
+		}
+		if (**line == '\0')
+		{
+			free(*line);
+			continue ;
 		}
 		if (ft_process_line(shell, *line, cmds) == 1)
 			continue ;

@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 00:00:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/25 16:08:38 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/25 18:47:26 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	sigint_handler(int signo)
 	(void)signo;
 	g_sigint_received = 1;
 	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_redisplay();
 }
 
 void	setup_shell_signals(void)
