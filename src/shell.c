@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:22:00 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/24 20:29:30 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/26 18:15:27 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,18 @@ static char	*ft_generate_prompt(t_shell *shell)
 	(void)shell; // Evitar warning de variable no usada
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
-		return (ft_strdup("minishell ->$ "));
+		return (ft_strdup("minishell$ "));
 	
-	// Crear prompt: "minishell:directorio/ ->$ "
+	// Crear prompt: "minishell:directorio$ "
 	temp = ft_strjoin("minishell:", cwd);
 	free(cwd);
 	if (!temp)
-		return (ft_strdup("minishell ->$ "));
+		return (ft_strdup("minishell$ "));
 	
-	prompt = ft_strjoin(temp, "/ ->$ ");
+	prompt = ft_strjoin(temp, "$ ");
 	free(temp);
 	if (!prompt)
-		return (ft_strdup("minishell ->$ "));
+		return (ft_strdup("minishell$ "));
 	
 	return (prompt);
 }

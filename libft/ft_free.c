@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 23:05:54 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/25 13:05:29 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/26 17:18:04 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,14 @@ void	ft_error(const char *custom_msg, int count, int type, ...)
 
 	format = NULL;
 	if (custom_msg)
-	{
 		ft_putstr_fd((char *)custom_msg, 2);
-		perror("zsh: ");
-	}
 	va_start(ap, type);
 	i = 0;
 	while (i++ < count)
 	{
 		format = va_arg(ap, t_format *);
 		if (!format)
-            continue;
+			continue;
 		if (type == 0)
 			ft_shallow_free(format->ptr1);
 		if (type == 1)

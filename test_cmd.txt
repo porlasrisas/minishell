@@ -1,0 +1,1 @@
+echo "exit_code ->$? user ->$USER home -> $HOME" && cat test_cmd.txt

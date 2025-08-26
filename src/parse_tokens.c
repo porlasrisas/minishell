@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:13:51 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/25 14:52:44 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/26 17:31:37 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,27 @@ static void	ft_add_argument(t_shell *shell, t_command *cmd, char *arg)
 	char	**new_array;
 	char	*processed_arg;
 
+	processed_arg = ft_process_token_quotes(shell, arg);
+	if (!processed_arg || processed_arg[0] == '\0')
+	{
+		if (processed_arg)
+			free(processed_arg);
+		return;
+	}
 	new_size = (cmd->args_count + 2) * (sizeof(char *));
 	new_array = ft_realloc(cmd->args, cmd->args_count * sizeof(char *), new_size);
 	if (!new_array)
+	{
+		free(processed_arg);
 		return;
+	}
 	cmd->args = new_array;
-	processed_arg = ft_process_token_quotes(shell, arg);
 	cmd->args[cmd->args_count] = processed_arg;
 	cmd->args[cmd->args_count + 1] = NULL;
 	cmd->args_count++;
 }
 
-static void	ft_add_redirection(t_command *cmd, char *file, t_redir_type type)
+static void	ft_add_redirection(t_shell *shell, t_command *cmd, char *file, t_redir_type type)
 {
 	size_t			new_size;
 	t_redirection	*new_array;
@@ -59,10 +68,10 @@ static void	ft_add_redirection(t_command *cmd, char *file, t_redir_type type)
 	cmd->redirs[cmd->redir_count].heredoc_content = NULL;
 	
 	// Para heredoc, procesar comillas del delimitador
-	if (type == REDIR_HEREDOC)
+	if (type == REDIR_HEREDOC || type == REDIR_IN || type == REDIR_OUT || type == REDIR_APPEND)
 		processed_file = ft_remove_quotes(file);
 	else
-		processed_file = ft_strdup(file);
+		processed_file = ft_process_token_quotes(shell, file);
 		
 	cmd->redirs[cmd->redir_count].file = processed_file;
 	cmd->redir_count++;
@@ -84,9 +93,11 @@ static void	ft_add_redirection(t_command *cmd, char *file, t_redir_type type)
         if (type == REDIR_IN || type == REDIR_OUT || type == REDIR_APPEND || type == REDIR_HEREDOC)
         {
             if (!tokens[i + 1])
+            {
+                free(cmd);
                 return (NULL);
-            // Para heredoc, no expandas aquí; solo guarda el delimitador literal
-            ft_add_redirection(cmd, tokens[i + 1], type);
+            }
+            ft_add_redirection(shell, cmd, tokens[i + 1], type);
             i += 2;
         }
         else if (type == PIPE || type == SEMICOLON)

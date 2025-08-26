@@ -68,8 +68,8 @@ char	**ft_copy_token_segment(t_shell *shell, int start, int end)
 
 int	ft_validate_pipe_syntax(t_shell *shell)
 {
-	if (!shell->tokens[0])
-		return (0);
+	if (!shell->tokens || !shell->tokens[0])
+		return (1); // Línea vacía es válida, no es un error de sintaxis
 	if (ft_get_redir_type(shell->tokens[0]) == PIPE || 
 		ft_get_redir_type(shell->tokens[0]) == SEMICOLON)
 		return (0);

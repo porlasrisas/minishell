@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:59:18 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/25 14:24:37 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/26 17:14:31 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static char	*ft_get_word(char *line, int *i)
 {
     int		start;
     char	quote;
-    int		tmp;
 
     start = *i;
     while (line[*i] && !ft_isspace(line[*i]) && !ft_is_metachar(line[*i]))
@@ -47,9 +46,11 @@ static char	*ft_get_word(char *line, int *i)
         if (line[*i] == '\'' || line[*i] == '"')
         {
             quote = line[*i];
-            tmp = *i;
-            ft_get_quoted(line, &tmp, quote); // Procesar el contenido entre comillas
-            *i = tmp; // Actualizar el índice
+            (*i)++;
+            while (line[*i] && line[*i] != quote)
+                (*i)++;
+            if (line[*i] == quote)
+                (*i)++;
         }
         else
             (*i)++;

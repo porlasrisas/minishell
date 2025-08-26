@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:47:53 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/24 23:25:14 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/26 18:50:44 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	main(int ac, char **av, char **env)
 		{
 			setup_shell_signals();
 			g_sigint_received = 0;
-			line = ft_prompt_line(&shell, "minishell ->$ ");
+			line = ft_prompt_line(&shell, "minishell$ ");
 			if (!line)
 			{
 				write(1, "exit\n", 5);

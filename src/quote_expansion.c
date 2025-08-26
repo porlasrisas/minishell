@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 01:00:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/25 12:57:00 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/26 17:31:37 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,26 @@ char	*ft_expand_double_quotes(t_shell *shell, char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1])
+		if (str[i] == '$')
 		{
-			i++;
-			var_name = ft_extract_var_name(str, &i);
-			var_value = ft_expand_variable(shell, var_name);
-			temp = ft_strjoin_free(result, var_value);
-			result = temp;
-			free(var_name);
-			free(var_value);
+			if (str[i + 1] && (ft_isalnum(str[i + 1]) || str[i + 1] == '_' || 
+				str[i + 1] == '?' || str[i + 1] == '{'))
+			{
+				i++;
+				var_name = ft_extract_var_name(str, &i);
+				var_value = ft_expand_variable(shell, var_name);
+				temp = ft_strjoin_free(result, var_value);
+				result = temp;
+				free(var_name);
+				free(var_value);
+			}
+			else
+			{
+				temp = ft_substr(str, i, 1);
+				result = ft_strjoin_free(result, temp);
+				free(temp);
+				i++;
+			}
 		}
 		else if (str[i] == '\\')
 		{
@@ -126,15 +137,26 @@ char	*ft_expand_unquoted_token(t_shell *shell, char *token)
 	i = 0;
 	while (token[i])
 	{
-		if (token[i] == '$' && token[i + 1])
+		if (token[i] == '$')
 		{
-			i++;
-			var_name = ft_extract_var_name(token, &i);
-			var_value = ft_expand_variable(shell, var_name);
-			temp = ft_strjoin_free(result, var_value);
-			result = temp;
-			free(var_name);
-			free(var_value);
+			if (token[i + 1] && (ft_isalnum(token[i + 1]) || token[i + 1] == '_' || 
+				token[i + 1] == '?' || token[i + 1] == '{'))
+			{
+				i++;
+				var_name = ft_extract_var_name(token, &i);
+				var_value = ft_expand_variable(shell, var_name);
+				temp = ft_strjoin_free(result, var_value);
+				result = temp;
+				free(var_name);
+				free(var_value);
+			}
+			else
+			{
+				temp = ft_substr(token, i, 1);
+				result = ft_strjoin_free(result, temp);
+				free(temp);
+				i++;
+			}
 		}
 		else
 		{
@@ -142,6 +164,70 @@ char	*ft_expand_unquoted_token(t_shell *shell, char *token)
 			result = ft_strjoin_free(result, temp);
 			free(temp);
 			i++;
+		}
+	}
+	return (result);
+}
+
+static char	*ft_handle_mixed_quotes(t_shell *shell, char *token)
+{
+	char	*result;
+	char	*temp;
+	char	*segment;
+	int		i;
+	int		start;
+	char	quote_char;
+
+	result = ft_strdup("");
+	i = 0;
+	while (token[i])
+	{
+		if (token[i] == '"' || token[i] == '\'')
+		{
+			quote_char = token[i];
+			start = ++i;
+			while (token[i] && token[i] != quote_char)
+				i++;
+			if (token[i] == quote_char)
+			{
+				segment = ft_substr(token, start, i - start);
+				if (quote_char == '"')
+					temp = ft_expand_double_quotes(shell, segment);
+				else
+					temp = ft_strdup(segment);
+				result = ft_strjoin_free(result, temp);
+				free(segment);
+				free(temp);
+				i++;
+			}
+			else
+			{
+				// Comilla sin cerrar, tratar como texto normal
+				segment = ft_substr(token, start - 1, 1);
+				result = ft_strjoin_free(result, segment);
+				free(segment);
+			}
+		}
+		else
+		{
+			start = i;
+			while (token[i] && token[i] != '"' && token[i] != '\'')
+				i++;
+			if (i > start)
+			{
+				segment = ft_substr(token, start, i - start);
+				if (ft_strchr(segment, '$'))
+				{
+					temp = ft_expand_unquoted_token(shell, segment);
+					result = ft_strjoin_free(result, temp);
+					free(temp);
+				}
+				else
+				{
+					result = ft_strjoin_free(result, segment);
+				}
+				free(segment);
+			}
 		}
 	}
 	return (result);
@@ -157,8 +243,9 @@ char	*ft_process_token_quotes(t_shell *shell, char *token)
 		return (NULL);
 	len = ft_strlen(token);
 	
-	// Token con comillas dobles - expandir variables
-	if (len >= 2 && token[0] == '"' && token[len - 1] == '"')
+	// Token completamente entre comillas dobles
+	if (len >= 2 && token[0] == '"' && token[len - 1] == '"' && 
+		!ft_strchr(token + 1, '"'))
 	{
 		content = ft_substr(token, 1, len - 2);
 		result = ft_expand_double_quotes(shell, content);
@@ -166,10 +253,17 @@ char	*ft_process_token_quotes(t_shell *shell, char *token)
 		return (result);
 	}
 	
-	// Token con comillas simples - literal (no expandir)
-	if (len >= 2 && token[0] == '\'' && token[len - 1] == '\'')
+	// Token completamente entre comillas simples
+	if (len >= 2 && token[0] == '\'' && token[len - 1] == '\'' && 
+		!ft_strchr(token + 1, '\''))
 	{
 		return (ft_substr(token, 1, len - 2));
+	}
+	
+	// Token con comillas mixtas o múltiples
+	if (ft_strchr(token, '"') || ft_strchr(token, '\''))
+	{
+		return (ft_handle_mixed_quotes(shell, token));
 	}
 	
 	// Token sin comillas - expandir variables si las tiene
