@@ -54,20 +54,26 @@ char	*ft_expand_double_quotes(t_shell *shell, char *str)
 	result = ft_strdup("");
 	i = 0;
 	while (str[i])
-	{
-		if (str[i] == '$' && str[i + 1])
-			temp = process_variable_in_quotes(shell, str, &i);
-		else if (str[i] == '\\')
-			temp = ft_process_escape(str, &i);
-		else
-		{
-			temp = ft_substr(str, i, 1);
-			i++;
-		}
-		result = ft_strjoin_free(result, temp);
-		free(temp);
-	}
-	return (result);
+    {
+        if (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '{' || str[i + 1] == '?'))
+            temp = process_variable_in_quotes(shell, str, &i);
+        else if (str[i] == '$')
+        {
+            // Lone $: treat as literal
+            temp = ft_substr(str, i, 1);
+            i++;
+        }
+        else if (str[i] == '\\')
+            temp = ft_process_escape(str, &i);
+        else
+        {
+            temp = ft_substr(str, i, 1);
+            i++;
+        }
+        result = ft_strjoin_free(result, temp);
+        free(temp);
+    }
+    return (result);
 }
 
 static char	*expand_var_in_unquoted(t_shell *shell, char *token, int *i)

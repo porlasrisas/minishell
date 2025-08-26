@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 00:00:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/25 17:17:56 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/26 15:41:08 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,7 @@ void	ft_add_redirection(t_command *cmd, char *file, t_redir_type type)
 	cmd->redirs = new_array;
 	cmd->redirs[cmd->redir_count].type = type;
 	cmd->redirs[cmd->redir_count].heredoc_content = NULL;
-	if (type == REDIR_HEREDOC)
-		processed_file = ft_remove_quotes(file);
-	else
-		processed_file = ft_strdup(file);
+	processed_file = ft_remove_quotes(file);
 	cmd->redirs[cmd->redir_count].file = processed_file;
 	cmd->redir_count++;
 }

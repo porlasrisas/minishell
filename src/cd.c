@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 15:37:24 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/08/25 17:46:14 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/26 15:51:45 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	ft_handle_cd(t_shell *shell)
 
 void	ft_cd(t_shell *shell, char **args)
 {
-	if (!args[1])
+	if (!args[1] )
 	{
 		if (cd_home(shell))
 			return ;

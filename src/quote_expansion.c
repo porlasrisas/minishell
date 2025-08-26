@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 01:00:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/25 17:53:24 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/26 15:49:00 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ char	*ft_expand_variable(t_shell *shell, char *var_name)
 	if (ft_strncmp(var_name, "?", 1) == 0)
 		return (ft_itoa(shell->exit_status));
 	value = ft_get_env(&shell->env, var_name);
-	if (value)
-		return (ft_strdup(value));
-	return (ft_strdup(""));
+	if (!value)
+		return (ft_strdup(""));
+	return (ft_strdup(value));
 }
 
 char	*ft_extract_var_name(char *str, int *i)
