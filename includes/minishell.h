@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
+/*   By: carbon <carbon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/25 17:53:24 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/26 01:54:56 by carbon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
+# include <stdint.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/ioctl.h>
