@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 20:40:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/24 23:26:39 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/27 17:52:14 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,11 @@ void	ft_execute_simple_command(t_shell *shell)
 	if (!shell || !shell->commands || !shell->commands[0])
 		return ;
 	cmd = shell->commands[0];
-	if (!cmd->args || !cmd->args[0])
+	if (!cmd->args || !cmd->args[0] || ft_strlen(cmd->args[0]) == 0)
+	{
+		shell->exit_status = 0;  // Variable vacía da exit code 0
 		return ;
+	}
 	if (ft_is_builtin(cmd->args[0]) && cmd->redir_count == 0)
 	{
 		ft_execute_builtin(shell, cmd);

@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 20:10:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/26 17:34:51 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:24:37 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,6 @@ static t_command	**ft_parse_pipeline(t_shell *shell)
 
 	if (!ft_validate_pipe_syntax(shell))
 		return (NULL);
-	if (!shell->tokens || !shell->tokens[0])
-	{
-		cmds = malloc(sizeof(t_command *) * 1);
-		if (!cmds)
-			return (NULL);
-		cmds[0] = NULL;
-		shell->command_count = 0;
-		return (cmds);
-	}
 	shell->num_cmds = ft_count_pipes(shell);
 	cmds = malloc(sizeof(t_command *) * (shell->num_cmds + 1));
 	if (!cmds)

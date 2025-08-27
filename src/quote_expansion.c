@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 01:00:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/26 17:31:37 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/27 16:55:54 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,34 +200,24 @@ static char	*ft_handle_mixed_quotes(t_shell *shell, char *token)
 				free(temp);
 				i++;
 			}
-			else
-			{
-				// Comilla sin cerrar, tratar como texto normal
-				segment = ft_substr(token, start - 1, 1);
-				result = ft_strjoin_free(result, segment);
-				free(segment);
-			}
 		}
 		else
 		{
 			start = i;
 			while (token[i] && token[i] != '"' && token[i] != '\'')
 				i++;
-			if (i > start)
+			segment = ft_substr(token, start, i - start);
+			if (ft_strchr(segment, '$'))
 			{
-				segment = ft_substr(token, start, i - start);
-				if (ft_strchr(segment, '$'))
-				{
-					temp = ft_expand_unquoted_token(shell, segment);
-					result = ft_strjoin_free(result, temp);
-					free(temp);
-				}
-				else
-				{
-					result = ft_strjoin_free(result, segment);
-				}
-				free(segment);
+				temp = ft_expand_unquoted_token(shell, segment);
+				result = ft_strjoin_free(result, temp);
+				free(temp);
 			}
+			else
+			{
+				result = ft_strjoin_free(result, segment);
+			}
+			free(segment);
 		}
 	}
 	return (result);

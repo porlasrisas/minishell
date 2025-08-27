@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 15:37:24 by carbon-m          #+#    #+#             */
-/*   Updated: 2025/08/26 16:50:31 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/27 17:40:37 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,43 +59,46 @@ int	ft_handle_cd(t_shell *shell)
 
 void	ft_cd(t_shell *shell, char **args)
 {
-	char	*new_pwd;
-	char	*expanded_path;
+    char	*new_pwd;
+    char	*expanded_path;
 
-	if (!args[1])
-	{
-		char *home = getenv("HOME");
-		if (!home || chdir(home) != 0)
-		{
-			ft_cd_error(home);
-			shell->exit_status = 1;
-			return;
-		}
-	}
-	else
-	{
-		expanded_path = ft_process_token_quotes(shell, args[1]);
-		if (chdir(expanded_path) != 0)
-		{
-			ft_cd_error(expanded_path);
-			shell->exit_status = 1;
-			free(expanded_path);
-			return;
-		}
-		free(expanded_path);
-	}
+    if (!args[1]) // Si no se pasa un argumento, ir al directorio HOME
+    {
+        char *home = getenv("HOME");
+        if (!home || chdir(home) != 0)
+        {
+            ft_cd_error(home);
+            shell->exit_status = 1;
+            return;
+        }
+    }
+    else
+    {
+        // Expandir variables en el path
+        expanded_path = ft_process_token_quotes(shell, args[1]);
+        if (chdir(expanded_path) != 0) // Cambiar al directorio especificado
+        {
+            ft_cd_error(expanded_path);
+            shell->exit_status = 1;
+            free(expanded_path);
+            return;
+        }
+        free(expanded_path);
+    }
 
-	if (shell->env.oldpwd)
-		free(shell->env.oldpwd);
-	shell->env.oldpwd = shell->env.pwd;
+    // Actualizar oldpwd
+    if (shell->env.oldpwd)
+        free(shell->env.oldpwd);
+    shell->env.oldpwd = shell->env.pwd;
 
-	new_pwd = getcwd(NULL, 0);
-	if (!new_pwd)
-	{
-		ft_cd_error(NULL);
-		shell->exit_status = 1;
-		return;
-	}
-	shell->env.pwd = new_pwd;
-	shell->exit_status = 0;
+    // Actualizar pwd
+    new_pwd = getcwd(NULL, 0);
+    if (!new_pwd)
+    {
+        ft_cd_error(NULL);
+        shell->exit_status = 1;
+        return;
+    }
+    shell->env.pwd = new_pwd;
+    shell->exit_status = 0;
 }

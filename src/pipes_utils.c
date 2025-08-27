@@ -109,12 +109,12 @@ void	pipe_exec_child(t_shell *shell, t_command *cmd, int prev_fd,
 	char	*path;
 
 	setup_child_pipes(prev_fd, cmd, pipe_fd);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (has_heredoc(cmd))
 		handle_redirections_with_heredoc(cmd);
 	else
 		handle_redirections(cmd);
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 	if (!cmd->args || !cmd->args[0] || ft_strlen(cmd->args[0]) == 0)
 		exit(1);
 	if (ft_is_builtin(cmd->args[0]))
