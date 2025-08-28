@@ -6,11 +6,14 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:22:00 by guigonza          #+#    #+#             */
-/*   Updated: 2025/08/24 20:29:30 by Guille           ###   ########.fr       */
+/*   Updated: 2025/08/28 19:17:53 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <readline/readline.h>
+#include <stdio.h>
+#include <unistd.h>
 
 char	*ft_get_env(t_env *env, const char *key)
 {
@@ -82,9 +85,16 @@ char	*ft_prompt_line(t_shell *shell, const char *prompt)
 {
 	char	*line;
 	char	*dynamic_prompt;
+	int		interactive;
 
 	(void)prompt; // Ignorar el prompt pasado como parámetro
-	dynamic_prompt = ft_generate_prompt(shell);
+	interactive = isatty(STDIN_FILENO);
+	if (interactive)
+		dynamic_prompt = ft_generate_prompt(shell);
+	else
+		dynamic_prompt = ft_strdup("");
+	// Enviar el prompt de readline a stderr para no contaminar stdout
+	rl_outstream = stderr;
 	line = readline(dynamic_prompt);
 	free(dynamic_prompt);
 	

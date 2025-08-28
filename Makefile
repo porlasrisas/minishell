@@ -6,13 +6,13 @@
 #    By: Guille <Guille@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/08/24 21:42:03 by Guille           ###   ########.fr        #
+#    Updated: 2025/08/28 19:23:35 by Guille           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME        = minishell
 CC          = cc
-CFLAGS      = -Wall -Wextra -Werror 
+CFLAGS      = -Wall -Wextra -Werror -fsanitize=address -g3
 LDFLAGS 	= -lreadline
 
 SRC_DIR     = src

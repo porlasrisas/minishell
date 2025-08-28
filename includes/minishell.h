@@ -139,7 +139,6 @@ void			handle_redirections(t_command *cmd);
 /* pipeline utils */
 int				open_pipe_if_needed(t_command *cmd, int i, int total,
 					int pipe_fd[2]);
-void			close_if_valid(int fd);
 void			setup_child_pipes(int prev_fd, t_command *cmd, int pipe_fd[2]);
 void			parent_after_fork(pid_t pid, int *prev_fd, int pipe_fd[2],
 				t_command *cmd);
