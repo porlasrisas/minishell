@@ -1,3 +1,0 @@
-cat <"./test_files/infile" | echo hi
-echo "STATUS:$?"
-exit

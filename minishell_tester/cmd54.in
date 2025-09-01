@@ -1,3 +1,0 @@
-cat ./test_files/infile_big | grep oi
-echo "STATUS:$?"
-exit

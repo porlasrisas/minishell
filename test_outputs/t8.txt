@@ -1,3 +1,0 @@
-zsh: : No such file or directory
-hola
-exit

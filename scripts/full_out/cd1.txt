@@ -1,2 +1,0 @@
-/Users/Guille/Desktop/42_projects/minishell
-/Users/Guille

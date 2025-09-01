@@ -1,4 +1,0 @@
-zsh: : No such file or directory
-a
-b
-exit

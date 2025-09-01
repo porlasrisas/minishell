@@ -1,0 +1,25 @@
+# Ignora todo por defecto
+*
+
+# Mantén este archivo
+!.gitignore
+
+# Entregables del proyecto
+!Makefile
+
+# Headers
+!includes/
+!includes/**/
+!includes/**/*.h
+
+# Código fuente
+!src/
+!src/**/
+!src/**/*.c
+
+# Libft (fuentes, headers y su Makefile)
+!libft/
+!libft/**/
+!libft/Makefile
+!libft/**/*.h
+!libft/**/*.c
