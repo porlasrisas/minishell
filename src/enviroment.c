@@ -14,14 +14,18 @@
 
 char	**copy_env(char **envp, int *count)
 {
-	int i = 0;
+	int		i;
+	char	**env;
+	int		j;
+
+	i = 0;
 	while (envp[i])
 		i++;
 	*count = i;
-	char **env = malloc(sizeof(char *) * (i + 1));
+	env = malloc(sizeof(char *) * (i + 1));
 	if (!env)
 		return (NULL);
-	int j = 0;
+	j = 0;
 	while (j < i)
 	{
 		env[j] = ft_strdup(envp[j]);
@@ -33,11 +37,15 @@ char	**copy_env(char **envp, int *count)
 
 char	*get_env_value(t_env *env, const char *search)
 {
-	int len = ft_strlen(search);
-	int i = 0;
+	int	len;
+	int	i;
+
+	len = ft_strlen(search);
+	i = 0;
 	while (i < env->count)
 	{
-		if (ft_strncmp(env->variables[i], search, len) == 0 && env->variables[i][len] == '=')
+		if (ft_strncmp(env->variables[i], search, len) == 0
+			&& env->variables[i][len] == '=')
 			return (env->variables[i] + len + 1);
 		i++;
 	}

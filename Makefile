@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: Guille <Guille@student.42.fr>              +#+  +:+       +#+         #
+#    By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#              #
-#    Updated: 2025/08/28 19:23:35 by Guille           ###   ########.fr        #
+#    Created: 2025/04/07 15:57:01 by guigonza          #+#    #+#             #
+#    Updated: 2025/09/02 20:55:31 by Guille           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME        = minishell
-CC          = cc
-CFLAGS      = -Wall -Wextra -Werror -fsanitize=address -g3
+CC          = cc 
+CFLAGS      = -Wall -Wextra -Werror
 LDFLAGS 	= -lreadline
 
 SRC_DIR     = src
@@ -28,7 +28,6 @@ SRC = $(SRC_DIR)/shell.c \
 	  $(SRC_DIR)/parse_utils.c \
 	  $(SRC_DIR)/parse_pipeline.c \
 	  $(SRC_DIR)/cd.c \
-	  $(SRC_DIR)/tests.c \
 	  $(SRC_DIR)/parse_args.c \
 	  $(SRC_DIR)/parse_args_utils.c \
 	  $(SRC_DIR)/pipes.c \
@@ -47,7 +46,15 @@ SRC = $(SRC_DIR)/shell.c \
 	  $(SRC_DIR)/signals.c \
 	  $(SRC_DIR)/path.c \
 	  $(SRC_DIR)/executor_utils.c \
-	  $(SRC_DIR)/builtin_echo.c
+	  $(SRC_DIR)/builtin_echo.c \
+	  $(SRC_DIR)/executor_utils2.c \
+	  $(SRC_DIR)/builtin_unset.c  \
+	  $(SRC_DIR)/builtin_export_utils.c \
+	  $(SRC_DIR)/quote_expansion_utils.c \
+	  $(SRC_DIR)/cleanup.c \
+      $(SRC_DIR)/init.c \
+
+
 
 # Archivos objeto correspondientes
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -67,8 +74,8 @@ $(NAME): $(OBJ) $(LIBFT_DIR)/libft.a
 	@echo "$(YELLOW)░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░"
 	@echo "$(YELLOW)░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░    ░▒▓██▓▒░░▒▓█▓▒░░▒▓█▓▒░"
 	@echo "$(YELLOW)░▒▓█▓▒▒▓███▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒▒▓███▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░  ░▒▓██▓▒░  ░▒▓████████▓▒░"
-	@echo "$(YELLOW)░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓▓█▓▒░░▒▓██▓▒░    ░▒▓█▓▒░░▒▓█▓▒░"
-	@echo "$(YELLOW)░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░"
+	@echo "$(YELLOW)░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓▓█▓▒░░▒▓██▓▒░    ░▒▓█▓▒░░▒▓█▓▒░"
+	@echo "$(YELLOW)░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░"
 	@echo "$(YELLOW) ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░"
 	@echo "$(GREEN)---------------------------------------------------------------------------------------------------"
 	@echo "$(GREEN)\n ¡Enhorabuena champion, todo compilado!\n"
@@ -93,3 +100,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+.SILENT:

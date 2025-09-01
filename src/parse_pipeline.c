@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 20:10:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/08/25 14:24:37 by Guille           ###   ########.fr       */
+/*   Updated: 2025/09/01 13:44:36 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	ft_process_semicolon_segment(t_shell *shell, t_command **cmds)
 	format.depth = 0;
 	ft_error(NULL, 1, 1, &format);
 	if (cmds[shell->cmd_idx])
-		cmds[shell->cmd_idx]->pipe_after = 0;  // Semicolon no es pipe
+		cmds[shell->cmd_idx]->pipe_after = 0;
 	shell->cmd_idx++;
 	shell->start_idx = shell->i + 1;
 }

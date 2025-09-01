@@ -6,11 +6,33 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 18:41:46 by carbon            #+#    #+#             */
-/*   Updated: 2025/08/24 21:04:48 by Guille           ###   ########.fr       */
+/*   Updated: 2025/09/01 18:49:34 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	append_line(char **content, size_t *len, char *line)
+{
+	char	*new_content;
+	size_t	line_len;
+
+	line_len = ft_strlen(line);
+	new_content = malloc(*len + line_len + 2);
+	if (!new_content)
+		return (0);
+	if (*content)
+	{
+		ft_memcpy(new_content, *content, *len);
+		free(*content);
+	}
+	ft_memcpy(new_content + *len, line, line_len);
+	new_content[*len + line_len] = '\n';
+	new_content[*len + line_len + 1] = '\0';
+	*content = new_content;
+	*len += line_len + 1;
+	return (1);
+}
 
 void	handle_heredoc(const char *delimiter)
 {
@@ -43,8 +65,6 @@ char	*read_heredoc_content(const char *delimiter)
 	char	*line;
 	char	*content;
 	size_t	len;
-	size_t	line_len;
-	char	*new_content;
 
 	content = NULL;
 	len = 0;
@@ -56,18 +76,11 @@ char	*read_heredoc_content(const char *delimiter)
 			free(line);
 			break ;
 		}
-		line_len = ft_strlen(line);
-		new_content = malloc(len + line_len + 2);
-		if (content)
+		if (!append_line(&content, &len, line))
 		{
-			ft_memcpy(new_content, content, len);
-			free(content);
+			free(line);
+			break ;
 		}
-		ft_memcpy(new_content + len, line, line_len);
-		new_content[len + line_len] = '\n';
-		new_content[len + line_len + 1] = '\0';
-		content = new_content;
-		len += line_len + 1;
 		free(line);
 	}
 	return (content);

@@ -2,6 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/01 13:37:01 by Guille            #+#    #+#             */
+/*   Updated: 2025/09/01 13:46:27 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +44,8 @@ int	ft_count_pipes(t_shell *shell)
 	count = 1;
 	while (shell->tokens[shell->i])
 	{
-		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE ||
-			ft_get_redir_type(shell->tokens[shell->i]) == SEMICOLON)
+		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE
+			|| ft_get_redir_type(shell->tokens[shell->i]) == SEMICOLON)
 			count++;
 		shell->i++;
 	}
@@ -69,42 +74,23 @@ char	**ft_copy_token_segment(t_shell *shell, int start, int end)
 int	ft_validate_pipe_syntax(t_shell *shell)
 {
 	if (!shell->tokens || !shell->tokens[0])
-		return (1);  // Línea vacía es válida, no es error
-	if (ft_get_redir_type(shell->tokens[0]) == PIPE || 
-		ft_get_redir_type(shell->tokens[0]) == SEMICOLON)
+		return (1);
+	if (ft_get_redir_type(shell->tokens[0]) == PIPE
+		|| ft_get_redir_type(shell->tokens[0]) == SEMICOLON)
 		return (0);
 	shell->i = 0;
 	while (shell->tokens[shell->i])
 	{
-		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE ||
-			ft_get_redir_type(shell->tokens[shell->i]) == SEMICOLON)
+		if (ft_get_redir_type(shell->tokens[shell->i]) == PIPE
+			|| ft_get_redir_type(shell->tokens[shell->i]) == SEMICOLON)
 		{
 			if (!shell->tokens[shell->i + 1])
 				return (0);
-			if (ft_get_redir_type(shell->tokens[shell->i + 1]) == PIPE ||
-				ft_get_redir_type(shell->tokens[shell->i + 1]) == SEMICOLON)
+			if (ft_get_redir_type(shell->tokens[shell->i + 1]) == PIPE
+				|| ft_get_redir_type(shell->tokens[shell->i + 1]) == SEMICOLON)
 				return (0);
 		}
 		shell->i++;
 	}
 	return (1);
-}
-
-char	*ft_remove_quotes(char *token)
-{
-	char	*result;
-	int		len;
-
-	if (!token)
-		return (NULL);
-	len = ft_strlen(token);
-	if (len < 2)
-		return (ft_strdup(token));
-	if ((token[0] == '\"' && token[len - 1] == '\"') ||
-		(token[0] == '\'' && token[len - 1] == '\''))
-	{
-		result = ft_substr(token, 1, len - 2);
-		return (result);
-	}
-	return (ft_strdup(token));
 }
