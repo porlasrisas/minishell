@@ -70,6 +70,7 @@ static int	ft_execute_commands_loop(t_shell *shell, pid_t *child_pids)
 	while (i < shell->command_count)
 	{
 		cmd = shell->commands[i];
+		collect_heredocs_for_cmd(shell, cmd);
 		if (open_pipe_if_needed(cmd, i, shell->command_count, pipe_fd) == -1)
 			return (-1);
 		pid = ft_create_child_process(shell, cmd, prev_fd, pipe_fd);

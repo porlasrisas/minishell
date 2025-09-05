@@ -79,7 +79,6 @@ void	exec_external_in_child(t_shell *shell, t_command *cmd)
 		print_err_3("minishell: ", cmd->args[0], ": is a directory\n");
 		exit(126);
 	}
-	apply_redirs(cmd);
 	setup_child_signals();
 	execve(path, cmd->args, shell->env.variables);
 	handle_execve_errors(shell, cmd, path);

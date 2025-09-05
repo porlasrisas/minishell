@@ -6,11 +6,15 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:13:51 by guigonza          #+#    #+#             */
-/*   Updated: 2025/09/01 12:51:51 by Guille           ###   ########.fr       */
+/*   Updated: 2025/09/05 14:48:08 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int					grow_redirs(t_redirection **arr, int *count);
+char				*process_redir_target(t_shell *shell, char *file,
+						t_redir_type type, int *no_expand);
 
 static t_command	*ft_new_command(void)
 {
@@ -57,25 +61,22 @@ static void	ft_add_argument(t_shell *shell, t_command *cmd, char *arg)
 static void	ft_add_redirection(t_shell *shell, t_command *cmd, char *file,
 		t_redir_type type)
 {
-	size_t			new_size;
-	t_redirection	*new_array;
-	char			*processed_file;
+	char	*processed_file;
+	int		no_expand;
 
-	new_size = (cmd->redir_count + 1) * sizeof(t_redirection);
-	new_array = ft_realloc(cmd->redirs, cmd->redir_count
-			* sizeof(t_redirection), new_size);
-	if (!new_array)
+	if (!grow_redirs(&cmd->redirs, &cmd->redir_count))
 		return ;
-	cmd->redirs = new_array;
 	cmd->redirs[cmd->redir_count].type = type;
 	cmd->redirs[cmd->redir_count].heredoc_content = NULL;
+	cmd->redirs[cmd->redir_count].hd_no_expand = 0;
+	processed_file = process_redir_target(shell, file, type, &no_expand);
 	if (type == REDIR_HEREDOC)
-		processed_file = ft_remove_quotes(file);
-	else
-		processed_file = ft_process_token_quotes(shell, file);
+		cmd->redirs[cmd->redir_count].hd_no_expand = no_expand;
 	cmd->redirs[cmd->redir_count].file = processed_file;
 	cmd->redir_count++;
 }
+
+/* helpers moved to parse_redirs_utils.c */
 
 static int	ft_process_token(t_shell *shell, t_command *cmd, char **tokens,
 		int *i)

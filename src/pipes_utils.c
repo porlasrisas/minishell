@@ -2,7 +2,7 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   pipes_utils.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
+/*                                                    +:+ +:+
 	+:+      */
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -80,13 +80,13 @@ void	pipe_exec_child(t_shell *shell, t_command *cmd, int prev_fd,
 	char	*arg0;
 
 	setup_child_pipes(prev_fd, cmd, pipe_fd);
+	apply_redirs(shell, cmd);
 	arg0 = NULL;
 	if (!cmd->args || !cmd->args[0] || ft_strlen(cmd->args[0]) == 0)
-		exit(1);
+		exit(0);
 	arg0 = cmd->args[0];
 	if (ft_is_builtin(arg0))
 	{
-		apply_redirs(cmd);
 		setup_child_signals();
 		close_extra_fds();
 		ft_execute_builtin(shell, cmd);

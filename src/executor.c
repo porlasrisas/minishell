@@ -15,8 +15,10 @@
 
 void	executor_run(t_shell *shell)
 {
+	precollect_heredocs(shell);
 	if (shell->command_count == 1 && !shell->commands[0]->pipe_after)
 		ft_execute_simple_command(shell);
 	else if (shell->command_count > 1)
 		ft_execute_pipeline_execve(shell);
+	fflush(NULL);
 }

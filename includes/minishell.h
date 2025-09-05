@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:50:40 by guigonza          #+#    #+#             */
-/*   Updated: 2025/09/01 23:00:36 by Guille           ###   ########.fr       */
+/*   Updated: 2025/09/05 14:53:14 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_redirection
 	char						*file;
 	char						*heredoc_content;
 	t_redir_type				type;
+	int							hd_no_expand;
 }								t_redirection;
 
 typedef struct s_command
@@ -98,7 +99,11 @@ typedef struct s_shell
 	t_env						env;
 	t_format					*free;
 	int							exit_status;
+	/* snapshot para expansión de $? durante lectura de heredoc */
+	int							hd_snapshot_set;
+	int							hd_snapshot_status;
 }								t_shell;
+void							precollect_heredocs(t_shell *shell);
 
 char							*ft_prompt_line(t_shell *shell,
 									const char *prompt);
@@ -142,6 +147,8 @@ void							ft_execute_pipeline_execve(t_shell *shell);
 void							executor_run(t_shell *shell);
 char							*ft_resolve_command_path(t_shell *shell,
 									char *cmd);
+void							collect_heredocs_for_cmd(t_shell *shell,
+									t_command *cmd);
 void							handle_redirections(t_command *cmd);
 /* pipeline utils */
 int								open_pipe_if_needed(t_command *cmd, int i,
@@ -161,16 +168,24 @@ int								ft_is_redirection_token(char *token);
 void							handle_redirections_with_heredoc(
 									t_command *cmd);
 void							handle_heredoc(const char *delimiter);
-char							*read_heredoc_content(const char *delimiter);
+char							*read_heredoc_content(t_shell *shell,
+									const char *delimiter, int no_expand);
 int								has_heredoc(t_command *cmd);
 void							setup_shell_signals(void);
 void							sigint_handler(int signo);
 void							heredoc_sigint_handler(int signo);
 void							setup_heredoc_signals(void);
 void							setup_child_signals(void);
-void							apply_redirs(t_command *cmd);
+void							apply_redirs(t_shell *shell, t_command *cmd);
 void							update_status_from_wait(t_shell *shell,
 									int status);
+char							*expand_heredoc_line(t_shell *shell,
+									char *line);
+int								hd_is_exact_delim(const char *line,
+									const char *delim);
+int								hd_append_line(char **content, size_t *len,
+									char *line);
+void							hd_init_snapshot_if_needed(t_shell *shell);
 void							run_shell_loop(t_shell *shell);
 void							print_err_3(const char *a, const char *b,
 									const char *c);
@@ -187,6 +202,12 @@ void							ft_update_env_var(t_env *env, int index,
 char							*ft_expand_export_value(t_shell *shell,
 									char *arg);
 void							print_export_sorted(t_env *env);
+
+/* parse_redirs_utils.c */
+int								grow_redirs(t_redirection **arr, int *count);
+char							*process_redir_target(t_shell *shell,
+									char *file, t_redir_type type,
+									int *no_expand);
 
 /* Public functions of quote_expansion_utils.c */
 char							*ft_extract_var_name(char *str, int *i);

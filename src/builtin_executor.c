@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 20:40:00 by Guille            #+#    #+#             */
-/*   Updated: 2025/09/01 13:37:45 by Guille           ###   ########.fr       */
+/*   Updated: 2025/09/05 13:27:28 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	execute_external_command(t_shell *shell, t_command *cmd)
 		return ;
 	}
 	else if (pid == 0)
+	{
+		apply_redirs(shell, cmd);
 		exec_external_in_child(shell, cmd);
+	}
 	else
 	{
 		waitpid(pid, &status, 0);
@@ -45,8 +48,8 @@ static int	exec_builtin_with_redirs(t_shell *shell, t_command *cmd)
 	}
 	else if (pid == 0)
 	{
-		apply_redirs(cmd);
 		setup_child_signals();
+		apply_redirs(shell, cmd);
 		ft_execute_builtin(shell, cmd);
 		exit(shell->exit_status);
 	}
@@ -98,6 +101,7 @@ void	ft_execute_simple_command(t_shell *shell)
 	if (!shell || !shell->commands || !shell->commands[0])
 		return ;
 	cmd = shell->commands[0];
+	collect_heredocs_for_cmd(shell, cmd);
 	if (!cmd->args || !cmd->args[0] || ft_strlen(cmd->args[0]) == 0)
 	{
 		shell->exit_status = 0;

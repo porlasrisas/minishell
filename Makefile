@@ -43,6 +43,8 @@ SRC = $(SRC_DIR)/shell.c \
 	  $(SRC_DIR)/builtin_executor.c \
 	  $(SRC_DIR)/quote_expansion.c \
 	  $(SRC_DIR)/here_doc.c \
+	  $(SRC_DIR)/heredoc_expand.c \
+	  $(SRC_DIR)/heredoc_utils.c \
 	  $(SRC_DIR)/signals.c \
 	  $(SRC_DIR)/path.c \
 	  $(SRC_DIR)/executor_utils.c \
@@ -51,6 +53,7 @@ SRC = $(SRC_DIR)/shell.c \
 	  $(SRC_DIR)/builtin_unset.c  \
 	  $(SRC_DIR)/builtin_export_utils.c \
 	  $(SRC_DIR)/quote_expansion_utils.c \
+	  $(SRC_DIR)/parse_redirs_utils.c \
 	  $(SRC_DIR)/cleanup.c \
       $(SRC_DIR)/init.c \
 

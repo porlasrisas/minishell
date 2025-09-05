@@ -6,7 +6,7 @@
 /*   By: Guille <Guille@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 12:00:00 by guigonza          #+#    #+#             */
-/*   Updated: 2025/09/01 14:03:23 by Guille           ###   ########.fr       */
+/*   Updated: 2025/09/05 13:00:41 by Guille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,13 @@ static void	handle_redir_append(t_redirection *redir)
 	close(fd);
 }
 
-static void	handle_redir_heredoc(t_redirection *redir)
+static void	handle_redir_heredoc(t_shell *shell, t_redirection *redir)
 {
 	int	pipefd[2];
 
 	if (!redir->heredoc_content)
-		redir->heredoc_content = read_heredoc_content(redir->file);
+		redir->heredoc_content = read_heredoc_content(shell, redir->file,
+				redir->hd_no_expand);
 	if (redir->heredoc_content)
 	{
 		if (pipe(pipefd) == -1)
@@ -73,10 +74,11 @@ static void	handle_redir_heredoc(t_redirection *redir)
 		dup2(pipefd[0], STDIN_FILENO);
 		close(pipefd[0]);
 		free(redir->heredoc_content);
+		redir->heredoc_content = NULL;
 	}
 }
 
-void	apply_redirs(t_command *cmd)
+void	apply_redirs(t_shell *shell, t_command *cmd)
 {
 	int	i;
 
@@ -90,7 +92,7 @@ void	apply_redirs(t_command *cmd)
 		else if (cmd->redirs[i].type == REDIR_APPEND)
 			handle_redir_append(&cmd->redirs[i]);
 		else if (cmd->redirs[i].type == REDIR_HEREDOC)
-			handle_redir_heredoc(&cmd->redirs[i]);
+			handle_redir_heredoc(shell, &cmd->redirs[i]);
 		i++;
 	}
 }
